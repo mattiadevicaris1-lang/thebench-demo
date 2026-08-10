@@ -531,6 +531,21 @@ function seedMock(){
   log('cliente','ordine','Ordine #41 creato · 4 righe · 17,50 € · pagato in app (Apple Pay)');
   log('cliente','ordine','Ordine #42 creato · 3 righe · 24,00 € · bibite abbinate al cibo');
   log('cliente','ordine','Ordine #43 creato · 2 righe · 14,50 € · pagato in app (Google Pay)');
+  // Ticket mock pre-caricati per popolare la sezione
+  ticketSeq = 2;
+  tickets = [
+    {id:2, orderId:42, cliente:'Marco R.', email:'marco.r@gmail.com',
+     testo:'La Bufalina è arrivata tiepida, si può rifare?',
+     at:new Date(Date.now()-4*60000), stato:'aperto'},
+    {id:1, orderId:38, cliente:'Anna B.', email:'anna.b@icloud.com',
+     testo:'Ho pagato in app ma sull\'email non trovo lo scontrino',
+     at:new Date(Date.now()-25*60000), stato:'risolto',
+     risposta:'Ciao Anna, lo scontrino è stato reinviato adesso. Controlla anche in Spam. Grazie!',
+     resolvedAt:new Date(Date.now()-18*60000)},
+  ];
+  log('cliente','ordine','⚠️ SEGNALAZIONE ticket #1 su ordine #38: "scontrino non ricevuto"',true);
+  log('menu','config','Ticket #1 — risposta inviata a anna.b@icloud.com');
+  log('cliente','ordine','⚠️ SEGNALAZIONE ticket #2 su ordine #42: "Bufalina tiepida"',true);
   log('cassa','incasso','#40 INCASSATO 12,00 € · contanti · scontrino RT #B012');
   log('menu','stock','«Weiss 0,4L» rimesso disponibile');
   log('menu','prezzo','«Spritz Aperol» prezzo 5,50 € → 6,00 €',true);
@@ -896,19 +911,29 @@ function stato(o){
   h+=`<div class="recap"><div class="row tot">
       <span>${o.paid?'Pagato':'Da pagare al ritiro'}</span><span>${eur(o.tot)}</span></div></div>`;
 
-  // Aggiungi al mio ordine — solo se ci sono righe ancora in preparing
-  const canAdd = o.righe.some(r=>['held','preparing'].includes(r.stato));
-  if(canAdd){
+  // Aggiungi al mio ordine — SOLO nei primi 60 secondi dall'invio.
+  // Dopo, l'ordine è considerato "in preparazione" e non è più modificabile.
+  const elapsed = now() - o.t0;
+  const modWindow = 60000;
+  const canAdd = elapsed < modWindow && o.righe.some(r=>['held','queued'].includes(r.stato) || r.stato==='preparing');
+  const secLeft = Math.max(0, Math.ceil((modWindow - elapsed)/1000));
+  if(canAdd && secLeft > 0){
     h+=`<button class="add-order-btn" onclick="startAddingTo(${o.id})">
-      ➕ Aggiungi altro al mio ordine #${o.id}</button>
+      ➕ Aggiungi altro al mio ordine #${o.id}
+      <span style="font-size:11px;font-weight:600;opacity:.75">— ancora ${secLeft}s</span></button>
       <p style="font-size:11px;color:var(--dim);text-align:center;margin:6px 0 14px">
-      Finché è in preparazione, aggiungi senza fare una seconda ricevuta.</p>`;
+      Puoi aggiungere finché la cucina non inizia. Dopo, ordine bloccato.</p>`;
+  } else {
+    h+=`<div style="text-align:center;font-size:11.5px;color:var(--dim);margin:14px 0;
+      padding:10px;background:var(--panel);border:1px dashed var(--line);border-radius:10px">
+      🔒 Ordine in preparazione — non più modificabile.
+      <br>Per annullare, chiedi alla <b style="color:var(--acc)">cassa</b>.</div>`;
   }
 
-  h+=`<div style="display:flex;gap:8px;margin-top:14px">
-      <button class="cta ghost" style="flex:1" onclick="openHelp(${o.id})">🆘 Serve aiuto?</button>
-      <button class="cta ghost" style="flex:1;color:var(--bad)" onclick="annulla(${o.id})">Annulla ordine</button>
-    </div></div>`;
+  h+=`<button class="cta ghost" style="width:100%;margin-top:8px" onclick="openHelp(${o.id})">
+    🆘 Serve aiuto?</button>
+    <p style="font-size:11px;color:var(--dim);text-align:center;margin:8px 0 0">
+    Per annullare l'ordine devi passare dalla cassa.</p></div>`;
   return h;
 }
 function conferma(id){const o=orders.find(x=>x.id===id);o.confirmed=true;
@@ -976,11 +1001,41 @@ function renderHelp(){
     </div></div>`;
   }
 }
+let tickets = []; // {id, orderId, cliente, email, testo, at, stato}
+let ticketSeq = 0;
 function sendProblema(){
   const txt=(document.getElementById('pTxt')||{}).value?.trim();
   if(!txt){alert('Scrivi qualcosa prima di inviare');return}
-  log('cliente','ordine',`⚠️ SEGNALAZIONE su #${helpOrderId}: "${txt}"`,true);
+  const o=orders.find(x=>x.id===helpOrderId);
+  tickets.unshift({
+    id: ++ticketSeq,
+    orderId: helpOrderId,
+    cliente: o?.nome || (user?.nome) || 'Anonimo',
+    email: o?.email || (user?.email) || '',
+    testo: txt,
+    at: new Date(),
+    stato: 'aperto'
+  });
+  log('cliente','ordine',`⚠️ SEGNALAZIONE ticket #${ticketSeq} su ordine #${helpOrderId}: "${txt}"`,true);
   helpView='sent';renderHelp();
+}
+function resolveTicket(id){
+  const t=tickets.find(x=>x.id===id);
+  if(!t) return;
+  t.stato='risolto';
+  t.resolvedAt=new Date();
+  log('menu','config',`Ticket #${id} (ordine #${t.orderId}) marcato RISOLTO dal gestore`);
+  draw();
+}
+function replyTicket(id){
+  const t=tickets.find(x=>x.id===id);
+  const reply=prompt(`Risposta a ${t.cliente} (ticket #${id}, ordine #${t.orderId}):`);
+  if(!reply||!reply.trim())return;
+  t.risposta=reply.trim();
+  t.stato='risolto';
+  t.resolvedAt=new Date();
+  log('menu','config',`Ticket #${id} — risposta inviata a ${t.email}: "${reply.trim()}"`);
+  draw();
 }
 
 /* ------ AGGIUNGI AL MIO ORDINE ------ */
@@ -1151,29 +1206,54 @@ function pronto(id,st){const o=orders.find(x=>x.id===id);
 
 /* ================= CASSA / RITIRO ================= */
 function viewCassa(){
-  const list=orders.filter(o=>o.stato!=='closed'&&o.righe.some(r=>r.stato==='ready'));
+  // La cassa ora vede TUTTI gli ordini attivi (non solo pronti):
+  //  - Pronti: può incassare/consegnare
+  //  - In preparazione/held: SOLO annullare (se il cliente lo chiede al banco)
+  const list=orders.filter(o=>o.stato!=='closed');
+  const readyN = list.filter(o=>o.righe.some(r=>r.stato==='ready')).length;
+  const daIncassare = list.filter(o=>!o.paid && o.righe.some(r=>r.stato==='ready')).length;
   let h=`<div class="kds"><div class="kdshead"><h2>💶 Banchi ritiro</h2>
-    <div class="stat"><div><b>${list.length}</b>da consegnare</div>
-    <div><b>${list.filter(o=>!o.paid).length}</b>da incassare</div></div></div>`;
-  if(!list.length) return h+`<div class="empty">Nessun ordine pronto al ritiro.</div></div>`;
+    <div class="stat"><div><b>${readyN}</b>da consegnare</div>
+    <div><b>${daIncassare}</b>da incassare</div>
+    <div><b>${list.length-readyN}</b>in preparazione</div></div></div>`;
+  if(!list.length) return h+`<div class="empty">Nessun ordine attivo.</div></div>`;
   h+=`<div class="cols">`;
   for(const o of list){
-    h+=`<div class="card ${o.paid?'rdy':''}" style="opacity:1"><div class="top"><div class="no">${o.id}</div>
-      <div class="tm" style="color:${o.paid?'var(--acc2)':'var(--acc)'};font-size:19px;font-weight:800">
+    const hasReady = o.righe.some(r=>r.stato==='ready');
+    const onlyInPrep = !hasReady;
+    h+=`<div class="card ${o.paid?'rdy':''} ${onlyInPrep?'held':''}" style="opacity:1"><div class="top"><div class="no">${o.id}</div>
+      <div class="tm" style="color:${o.paid?'var(--acc2)':'var(--acc)'};font-size:${hasReady?'19':'14'}px;font-weight:800">
       ${o.paid?'💳 PAGATO':eur(o.tot)}</div></div>
       <div class="who">${o.nome} · ${o.email}</div>`;
-    for(const [k,rs] of Object.entries(grouped(o))){
-      const s=stGroup(rs); if(s==='collected') continue;
-      h+=`<div class="line" style="border-top:1px solid var(--line);margin-top:6px;padding-top:8px">
-        <b style="color:var(--dim);font-size:11px">${k==='bar'?'BAR':'CUCINA'}</b>
-        <span style="font-size:13px">${rs.map(r=>r.q+'× '+r.n).join(', ')}</span></div>`;
-      if(s==='ready') h+=`<button class="act ${o.paid?'g':''}" onclick="consegna(${o.id},'${k}')">
-        ${o.paid?'✓ Consegna '+(k==='bar'?'bibite':'cibo'):'Incassa '+eur(o.tot)+' e consegna'}</button>`;
-      else h+=`<button class="act b" disabled>${k==='bar'?'Bibite':'Cibo'} non ancora pronto</button>`;
+
+    if(onlyInPrep){
+      // Ordine in preparazione — cassa vede solo azione "Annulla"
+      h+=`<div class="line" style="border-top:1px solid var(--line);margin-top:6px;padding-top:8px;font-size:12px;color:var(--dim)">
+        ⏳ In preparazione (${o.righe.length} righe) — non ancora pronto</div>
+        <button class="kds-so-btn" onclick="cassaAnnulla(${o.id})" style="color:var(--bad);border-color:var(--bad);margin-top:10px">
+          ❌ Annulla questo ordine (cliente al banco)</button>`;
+    } else {
+      for(const [k,rs] of Object.entries(grouped(o))){
+        const s=stGroup(rs); if(s==='collected') continue;
+        h+=`<div class="line" style="border-top:1px solid var(--line);margin-top:6px;padding-top:8px">
+          <b style="color:var(--dim);font-size:11px">${k==='bar'?'BAR':'CUCINA'}</b>
+          <span style="font-size:13px">${rs.map(r=>r.q+'× '+r.n).join(', ')}</span></div>`;
+        if(s==='ready') h+=`<button class="act ${o.paid?'g':''}" onclick="consegna(${o.id},'${k}')">
+          ${o.paid?'✓ Consegna '+(k==='bar'?'bibite':'cibo'):'Incassa '+eur(o.tot)+' e consegna'}</button>`;
+        else h+=`<button class="act b" disabled>${k==='bar'?'Bibite':'Cibo'} non ancora pronto</button>`;
+      }
     }
     h+=`</div>`;
   }
   return h+`</div></div>`;
+}
+function cassaAnnulla(id){
+  const o=orders.find(x=>x.id===id);
+  if(!o) return;
+  if(!confirm(`Confermi l'annullamento dell'ordine #${id} (${o.nome}, ${eur(o.tot)})?\n\nIl cliente sarà rimborsato se ha già pagato.`)) return;
+  log('cassa','ordine',`#${id} ANNULLATO in cassa · ${eur(o.tot)} · ${o.paid?'rimborso emesso':'non pagato'}`,true);
+  orders = orders.filter(x=>x.id!==id);
+  draw();
 }
 function consegna(id,k){
   const o=orders.find(x=>x.id===id);
@@ -1296,9 +1376,12 @@ function viewAdmin(){
   const tab=(k,l)=>`<button onclick="adminTab='${k}';draw()" style="padding:8px 15px;border-radius:99px;font-weight:700;
       font-size:13px;background:${adminTab===k?'var(--acc)':'var(--panel)'};
       color:${adminTab===k?'var(--navy)':'var(--dim)'};border:1px solid var(--line)">${l}</button>`;
+  const openT = tickets.filter(t=>t.stato==='aperto').length;
+  const ticketLabel = openT>0 ? `🎫 Ticket (${openT} aperti)` : '🎫 Ticket';
   const tabs=`<div style="display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap">
     ${tab('menu','Menu e tariffe')}
     ${tab('report','📊 Report serata')}
+    ${tab('tickets',ticketLabel)}
     ${tab('log','Log serata ('+LOG.length+')')}
     ${tab('ops','Operazioni')}
   </div>`;
@@ -1306,6 +1389,7 @@ function viewAdmin(){
   if(adminTab==='log') return viewLog(tabs);
   if(adminTab==='ops') return viewOps(tabs);
   if(adminTab==='report') return viewReport(tabs);
+  if(adminTab==='tickets') return viewTickets(tabs);
 
   let h=`<div class="kds"><div class="kdshead"><h2>⚙️ Menu e tariffe</h2>
     <div class="stat"><div><b>${ITEMS.filter(i=>!i.out).length}</b>attivi</div>
@@ -1397,6 +1481,62 @@ function toggleSospesi(){
   ordiniSospesi=!ordiniSospesi;
   log('menu','config',`Ordini da app ${ordiniSospesi?'SOSPESI':'RIATTIVATI'} dal gestore`,true);
   draw();
+}
+
+/* ------ TICKET SUPPORTO ------ */
+function viewTickets(tabs){
+  const open=tickets.filter(t=>t.stato==='aperto');
+  const closed=tickets.filter(t=>t.stato==='risolto');
+  let h=`<div class="kds"><div class="kdshead"><h2>🎫 Ticket di supporto</h2>
+    <div class="stat"><div><b>${open.length}</b>aperti</div>
+    <div><b>${closed.length}</b>risolti</div>
+    <div><b>${tickets.length}</b>totali</div></div></div>${tabs}`;
+  if(!tickets.length){
+    return h+`<div class="empty">Nessun ticket ancora.<br>
+      Vai al ruolo 📱 Cliente → apri un ordine → tocca "🆘 Serve aiuto?" → "⚠️ Segnala problema".</div></div>`;
+  }
+  h+=`<div style="max-width:820px">`;
+  if(open.length){
+    h+=`<h3 style="font-size:13px;color:var(--acc);text-transform:uppercase;letter-spacing:1.2px;margin:8px 0 12px">
+      Da gestire (${open.length})</h3>`;
+    open.forEach(t=>h+=renderTicketCard(t));
+  }
+  if(closed.length){
+    h+=`<h3 style="font-size:13px;color:var(--dim);text-transform:uppercase;letter-spacing:1.2px;margin:24px 0 12px">
+      Risolti (${closed.length})</h3>`;
+    closed.forEach(t=>h+=renderTicketCard(t));
+  }
+  h+=`</div><div style="font-size:11.5px;color:var(--dim);margin-top:14px;max-width:820px">
+    Nel sistema vero: i ticket arrivano anche via email al gestore + notifica push sul tablet.
+    Nel log serata resta traccia di ogni cambio di stato.</div></div>`;
+  return h;
+}
+function renderTicketCard(t){
+  const open = t.stato==='aperto';
+  return `<div class="card" style="border-left-color:${open?'var(--bad)':'var(--acc2)'};padding:16px;margin-bottom:10px">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px">
+      <div style="font-weight:800;font-size:14px">
+        🎫 Ticket #${t.id} · ordine #${t.orderId}
+        ${open ? '<span style="background:var(--bad);color:#fff;padding:2px 8px;border-radius:99px;font-size:10px;margin-left:6px;letter-spacing:.5px">APERTO</span>'
+               : '<span style="background:var(--acc2);color:#04170c;padding:2px 8px;border-radius:99px;font-size:10px;margin-left:6px;letter-spacing:.5px">RISOLTO</span>'}
+      </div>
+      <div style="font-size:11px;color:var(--dim)">${oraDi(t.at)}</div>
+    </div>
+    <div style="font-size:12.5px;color:var(--dim);margin-bottom:8px">
+      da <b style="color:var(--txt)">${t.cliente}</b> · ${t.email}
+    </div>
+    <div style="background:rgba(255,255,255,.04);border-left:3px solid ${open?'var(--bad)':'var(--acc2)'};
+      padding:10px 12px;border-radius:6px;font-size:13.5px;line-height:1.45;margin-bottom:${open?'12':'8'}px">
+      "${t.testo}"
+    </div>
+    ${t.risposta ? `<div style="background:rgba(61,220,132,.08);border-left:3px solid var(--acc2);
+      padding:10px 12px;border-radius:6px;font-size:12.5px;line-height:1.45;margin-bottom:8px">
+      <b style="color:var(--acc2);font-size:11px;letter-spacing:.5px">RISPOSTA GESTORE:</b><br>${t.risposta}</div>` : ''}
+    ${open ? `<div style="display:flex;gap:8px">
+      <button class="cta ghost" style="flex:1;padding:9px" onclick="replyTicket(${t.id})">💬 Rispondi al cliente</button>
+      <button class="cta ghost" style="flex:1;padding:9px;color:var(--acc2)" onclick="resolveTicket(${t.id})">✓ Marca risolto</button>
+    </div>` : `<div style="font-size:11px;color:var(--dim)">Risolto alle ${t.resolvedAt?oraDi(t.resolvedAt):'—'}</div>`}
+  </div>`;
 }
 
 /* ------ REPORT GIORNALIERO ------ */
