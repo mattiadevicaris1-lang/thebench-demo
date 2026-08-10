@@ -914,22 +914,17 @@ function stato(o){
   h+=`<div class="recap"><div class="row tot">
       <span>${o.paid?'Pagato':'Da pagare al ritiro'}</span><span>${eur(o.tot)}</span></div></div>`;
 
-  // Aggiungi al mio ordine — SOLO nei primi 60 secondi dall'invio.
-  // Dopo, l'ordine è considerato "in preparazione" e non è più modificabile.
-  const elapsed = now() - o.t0;
-  const modWindow = 60000;
-  const canAdd = elapsed < modWindow && o.righe.some(r=>['held','queued'].includes(r.stato) || r.stato==='preparing');
-  const secLeft = Math.max(0, Math.ceil((modWindow - elapsed)/1000));
-  if(canAdd && secLeft > 0){
+  // Aggiungi al mio ordine — modificabile finché NON è pagato.
+  // Il pagamento (in app o in cassa al ritiro) è ciò che "chiude" l'ordine.
+  if(!o.paid){
     h+=`<button class="add-order-btn" onclick="startAddingTo(${o.id})">
-      ➕ Aggiungi altro al mio ordine #${o.id}
-      <span style="font-size:11px;font-weight:600;opacity:.75">— ancora ${secLeft}s</span></button>
+      ➕ Aggiungi altro al mio ordine #${o.id}</button>
       <p style="font-size:11px;color:var(--dim);text-align:center;margin:6px 0 14px">
-      Puoi aggiungere finché la cucina non inizia. Dopo, ordine bloccato.</p>`;
+      Puoi aggiungere finché non paghi (in app o al ritiro in cassa).</p>`;
   } else {
     h+=`<div style="text-align:center;font-size:11.5px;color:var(--dim);margin:14px 0;
       padding:10px;background:var(--panel);border:1px dashed var(--line);border-radius:10px">
-      🔒 Ordine in preparazione — non più modificabile.
+      🔒 Ordine pagato — non più modificabile.
       <br>Per annullare, chiedi alla <b style="color:var(--acc)">cassa</b>.</div>`;
   }
 
