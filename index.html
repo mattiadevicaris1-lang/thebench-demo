@@ -7,44 +7,47 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>The Bench — Demo interattiva</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#152441; --panel:#1c3055; --panel2:#243c68; --line:#33507f;
-  --txt:#f2f6fc; --dim:#93a8c9; --acc:#ffc42e; --acc2:#3ddc84;
-  --warn:#ffc42e; --bad:#ff5d5d; --blue:#5ea0ff; --viola:#b08bff;
-  --navy:#152441; --r:14px;
+  --bg:#fec144; --panel:#ffd876; --panel2:#ffe7ad; --line:rgba(33,60,79,.25);
+  --txt:#213c4f; --dim:rgba(33,60,79,.65); --acc:#213c4f; --acc2:#15794a;
+  --warn:#8a5a00; --bad:#b33224; --blue:#1d5c96; --viola:#5b3fa8;
+  --navy:#fec144; --r:14px;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{margin:0;background:var(--bg);color:var(--txt);
-  font:15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+  font:15px/1.45 'Montserrat',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+h1,h2,h3,h4,.stp,button{font-family:'Anton',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  font-weight:400;letter-spacing:.5px;text-transform:uppercase}
+.soc-btn{font-family:'Montserrat',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  font-weight:700;letter-spacing:normal;text-transform:none}
+.field input,.help-card textarea{font-family:'Montserrat',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  text-transform:none;letter-spacing:normal}
 
 /* --- brand The Bench --- */
 .check{height:12px;background:repeating-conic-gradient(var(--acc) 0% 25%, var(--navy) 0% 50%) 0/24px 24px;
-  border-top:2px solid #0e1a30;border-bottom:2px solid #0e1a30}
+  border-top:2px solid #213c4f;border-bottom:2px solid #213c4f}
 .check.thin{height:8px;background-size:16px 16px}
-.logo{width:104px;height:104px;border-radius:50%;background:var(--acc);margin:0 auto 20px;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  box-shadow:0 10px 30px rgba(0,0,0,.45)}
-.logo b{display:block;font-size:15px;font-weight:900;letter-spacing:1px;color:var(--navy);
-  line-height:1;transform:skewY(-8deg)}
-.logo b.big{font-size:24px;letter-spacing:-.5px;margin-top:3px;
-  text-shadow:2px 2px 0 rgba(21,36,65,.25)}
+.check.tall{height:22px;background-size:22px 22px}
+.logo{display:block;width:104px;height:auto;margin:0 auto 20px;
+  filter:drop-shadow(0 10px 30px rgba(0,0,0,.45))}
 .logo-s{display:flex;align-items:center;gap:9px}
-.logo-s .dot{width:34px;height:34px;border-radius:50%;background:var(--acc);flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:900;
-  color:var(--navy);transform:skewY(-8deg);letter-spacing:-.3px}
-button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
+.logo-s .dot{width:34px;height:34px;flex-shrink:0;object-fit:contain}
+button{font-size:inherit;line-height:inherit;cursor:pointer;border:none;background:none;color:inherit}
 button:disabled{cursor:default}
 .wrap{max-width:1200px;margin:0 auto;padding:0 0 70px}
 
-.roles{position:sticky;top:0;z-index:50;background:#0e1a30;border-bottom:1px solid var(--line);
+.roles{position:sticky;top:0;z-index:50;background:#f7b52f;border-bottom:1px solid var(--line);
   display:flex;gap:4px;padding:8px;overflow-x:auto;align-items:center}
 .roles button{padding:8px 14px;border-radius:99px;color:var(--dim);font-size:13px;font-weight:700;white-space:nowrap}
 .roles button.on{background:var(--acc);color:var(--navy)}
 .roles .demo-brand{font-size:11px;font-weight:800;color:var(--acc);
-  padding:5px 12px;border-radius:99px;background:rgba(255,196,46,.12);
-  border:1px solid rgba(255,196,46,.35);letter-spacing:1px;white-space:nowrap;margin-right:6px}
-.hint{font-size:12px;color:var(--dim);padding:10px 14px;background:#101d36;border-bottom:1px solid var(--line);
+  padding:5px 12px;border-radius:99px;background:rgba(254,193,68,.12);
+  border:1px solid rgba(254,193,68,.35);letter-spacing:1px;white-space:nowrap;margin-right:6px}
+.hint{font-size:12px;color:var(--dim);padding:10px 14px;background:#f7b52f;border-bottom:1px solid var(--line);
   display:flex;justify-content:space-between;align-items:center;gap:12px}
 .hint .tour-restart{background:var(--acc);color:var(--navy);padding:6px 12px;border-radius:99px;
   font-size:11px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;flex-shrink:0}
@@ -54,20 +57,32 @@ button:disabled{cursor:default}
 .head h1{font-size:20px;margin:0;letter-spacing:-.3px}
 .tavolo{font-size:12px;color:var(--dim)}
 .badge{background:var(--panel2);border:1px solid var(--line);padding:5px 10px;border-radius:99px;font-size:12px;color:var(--dim)}
+.client-head{background:transparent;max-width:460px;margin:0 auto;padding:16px 18px;
+  display:flex;align-items:center;gap:14px;border-bottom:2px solid var(--line)}
+.client-head .logo-badge{width:56px;height:56px;flex-shrink:0;display:flex;
+  align-items:center;justify-content:center}
+.client-head .logo-badge img{width:100%;height:100%;object-fit:contain}
+.client-head h1{margin:0;font-size:24px;letter-spacing:.3px}
+.client-head .tavolo{font-size:13px;color:var(--dim);margin-top:2px}
+.tavolo-n{font-family:'Anton',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  font-weight:400;color:var(--txt);font-size:15px;letter-spacing:.3px}
 
 /* --- QR LANDING --- */
-.qr-page{min-height:calc(100vh - 80px);background:linear-gradient(180deg, #0a1428 0%, #152441 60%, #1a2d55 100%);
+.qr-page{min-height:calc(100vh - 80px);background:linear-gradient(180deg, #ffe9b0 0%, #fec144 55%, #ffcf5c 100%);
   display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center;
   animation:fadeIn .5s ease}
 .qr-page .logo{margin-bottom:24px;animation:pop .6s cubic-bezier(.34,1.56,.64,1)}
 .qr-page h1{font-size:26px;margin:0 0 6px;letter-spacing:-.5px}
 .qr-page .sub{color:var(--dim);margin-bottom:32px;font-size:14px;max-width:340px}
+.qr-claim{font-family:'Anton',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  font-weight:400;text-transform:uppercase;font-size:30px;line-height:1.15;letter-spacing:.3px;
+  color:var(--txt);max-width:360px;margin:4px 0 28px}
 .qr-frame{width:250px;height:250px;background:#fff;border-radius:24px;padding:22px;
-  box-shadow:0 24px 64px rgba(255,196,46,.28), 0 0 0 3px rgba(255,196,46,.15);
+  box-shadow:0 24px 64px rgba(33,60,79,.22), 0 0 0 3px rgba(33,60,79,.12);
   position:relative;margin-bottom:22px}
 .qr-frame svg{width:100%;height:100%;display:block}
 .qr-scan{position:absolute;left:22px;right:22px;height:3px;background:var(--acc);border-radius:2px;
-  box-shadow:0 0 24px var(--acc),0 0 44px rgba(255,196,46,.6);animation:scan 1.8s ease-in-out infinite}
+  box-shadow:0 0 24px var(--acc),0 0 44px rgba(33,60,79,.45);animation:scan 1.8s ease-in-out infinite}
 .qr-corners{position:absolute;inset:12px;pointer-events:none}
 .qr-corners span{position:absolute;width:22px;height:22px;border:3px solid var(--acc)}
 .qr-corners span:nth-child(1){top:0;left:0;border-right:none;border-bottom:none;border-radius:6px 0 0 0}
@@ -78,14 +93,14 @@ button:disabled{cursor:default}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @keyframes pop{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}
 .qr-instr{color:var(--acc);font-weight:700;font-size:15px;margin-bottom:16px;letter-spacing:.3px}
-.qr-tavolo{background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:14px;
+.qr-tavolo{background:rgba(33,60,79,.06);border:1px solid var(--line);border-radius:14px;
   padding:12px 22px;font-size:13px;color:var(--dim);margin-bottom:18px}
 .qr-tavolo b{color:var(--acc);font-size:15px;letter-spacing:1px}
 .qr-open{padding:14px 30px;background:var(--acc);color:var(--navy);
   border-radius:99px;font-weight:800;font-size:14px;letter-spacing:.4px;
-  box-shadow:0 10px 24px rgba(255,196,46,.35);animation:pulse 2s ease-in-out infinite}
-@keyframes pulse{0%,100%{transform:scale(1);box-shadow:0 10px 24px rgba(255,196,46,.35)}
-  50%{transform:scale(1.04);box-shadow:0 14px 34px rgba(255,196,46,.55)}}
+  box-shadow:0 10px 24px rgba(254,193,68,.35);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1);box-shadow:0 10px 24px rgba(254,193,68,.35)}
+  50%{transform:scale(1.04);box-shadow:0 14px 34px rgba(254,193,68,.55)}}
 .qr-foot{color:var(--dim);font-size:11px;margin-top:22px;letter-spacing:.3px;opacity:.7}
 
 /* --- SOCIAL LOGIN BUTTONS --- */
@@ -99,12 +114,12 @@ button:disabled{cursor:default}
 .or-divider{display:flex;align-items:center;gap:12px;margin:16px 0;color:var(--dim);font-size:11px;
   text-transform:uppercase;letter-spacing:1.5px;font-weight:700}
 .or-divider::before,.or-divider::after{content:'';flex:1;height:1px;background:var(--line)}
-.fast-hint{background:rgba(61,220,132,.08);border:1px solid rgba(61,220,132,.3);border-radius:10px;
-  padding:10px 12px;font-size:12px;color:#a8d8bf;margin-bottom:14px;line-height:1.45}
+.fast-hint{background:rgba(21,121,74,.08);border:1px solid rgba(21,121,74,.3);border-radius:10px;
+  padding:10px 12px;font-size:12px;color:#3a7a5c;margin-bottom:14px;line-height:1.45}
 .fast-hint b{color:var(--acc2)}
 
 /* --- SETUP TABLET (primo avvio) --- */
-.setup-page{min-height:calc(100vh - 80px);background:linear-gradient(180deg,#0a1428 0%,#152441 100%);
+.setup-page{min-height:calc(100vh - 80px);background:linear-gradient(180deg,#ffe9b0 0%,#fec144 100%);
   padding:40px 20px;display:flex;align-items:center;justify-content:center;animation:fadeIn .4s}
 .setup-box{max-width:520px;width:100%;background:var(--panel);border:1px solid var(--line);
   border-radius:22px;padding:28px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
@@ -115,7 +130,7 @@ button:disabled{cursor:default}
 .stat-card{background:var(--panel2);border:2px solid var(--line);border-radius:14px;padding:16px;
   margin-bottom:10px;cursor:pointer;display:flex;gap:14px;align-items:center;transition:.15s;width:100%;text-align:left}
 .stat-card:hover{border-color:var(--acc);transform:translateX(4px)}
-.stat-card.sel{border-color:var(--acc);background:#2a3b63}
+.stat-card.sel{border-color:var(--acc);background:#ffdb87}
 .stat-card .si{width:48px;height:48px;border-radius:12px;background:var(--panel);
   display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0}
 .stat-card .st{font-weight:800;font-size:16px}
@@ -124,7 +139,7 @@ button:disabled{cursor:default}
 .pin-input input{width:52px;height:64px;text-align:center;font-size:28px;font-weight:800;
   background:var(--panel2);border:2px solid var(--line);border-radius:12px;color:var(--acc);
   caret-color:var(--acc)}
-.pin-input input:focus{border-color:var(--acc);outline:none;box-shadow:0 0 0 4px rgba(255,196,46,.15)}
+.pin-input input:focus{border-color:var(--acc);outline:none;box-shadow:0 0 0 4px rgba(254,193,68,.15)}
 .setup-done{text-align:center;padding:30px 0}
 .setup-done .sd-i{font-size:60px;color:var(--acc2);margin-bottom:8px}
 .setup-done h2{margin:0 0 6px;color:var(--acc2)}
@@ -179,26 +194,26 @@ button:disabled{cursor:default}
 .peak .pb b{position:absolute;top:-18px;left:50%;transform:translateX(-50%);color:var(--acc);
   font-size:11px;font-weight:800}
 .peak .pl{font-size:10.5px;color:var(--dim);font-weight:700}
-.rep-note{background:rgba(255,196,46,.08);border-left:3px solid var(--acc);padding:10px 12px;
+.rep-note{background:rgba(254,193,68,.08);border-left:3px solid var(--acc);padding:10px 12px;
   border-radius:6px;font-size:12.5px;color:var(--dim);margin-top:12px;line-height:1.5}
 
 /* --- SOLD-OUT MODAL (cliente) --- */
 .so-mask{position:fixed;inset:0;background:rgba(6,12,26,.92);z-index:190;
   display:flex;align-items:center;justify-content:center;padding:20px;
   animation:fadeIn .3s ease}
-.so-card{background:linear-gradient(180deg,#3a1e2a 0%,var(--panel) 100%);
+.so-card{background:linear-gradient(180deg,#ffd9d3 0%,var(--panel) 100%);
   border:2px solid var(--bad);border-radius:22px;padding:24px;
   max-width:440px;width:100%;
-  box-shadow:0 24px 60px rgba(255,93,93,.4),0 0 0 4px rgba(255,93,93,.1)}
+  box-shadow:0 24px 60px rgba(179,50,36,.4),0 0 0 4px rgba(179,50,36,.1)}
 .so-card h3{margin:0 0 4px;font-size:20px;color:var(--bad)}
 .so-card .sos{color:var(--txt);font-size:14px;margin-bottom:14px;line-height:1.4}
 .so-card .sos b{color:var(--acc)}
-.so-timer{display:flex;align-items:center;gap:14px;background:rgba(0,0,0,.35);
+.so-timer{display:flex;align-items:center;gap:14px;background:rgba(33,60,79,.08);
   padding:12px 16px;border-radius:12px;margin-bottom:16px}
 .so-ring{width:56px;height:56px;flex-shrink:0;position:relative}
 .so-ring svg{width:100%;height:100%;transform:rotate(-90deg)}
 .so-ring circle{fill:none;stroke-width:5}
-.so-ring .bg-r{stroke:rgba(255,255,255,.1)}
+.so-ring .bg-r{stroke:rgba(33,60,79,.15)}
 .so-ring .fg-r{stroke:var(--acc);transition:stroke-dashoffset .5s linear}
 .so-ring .num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
   font-weight:800;font-size:16px;color:var(--acc)}
@@ -247,16 +262,16 @@ button:disabled{cursor:default}
 .help-card textarea{width:100%;background:var(--panel2);border:1px solid var(--line);
   border-radius:10px;padding:12px;color:var(--txt);font:inherit;min-height:100px;
   resize:vertical;margin:8px 0}
-.help-sent{background:#0d2a1a;border:1px solid var(--acc2);border-radius:12px;
+.help-sent{background:#d7f3e3;border:1px solid var(--acc2);border-radius:12px;
   padding:16px;text-align:center;margin-top:10px}
 .help-sent .hs2{font-size:14px;color:var(--acc2);font-weight:700}
-.help-sent .hs3{font-size:12px;color:#a8d8bf;margin-top:4px}
+.help-sent .hs3{font-size:12px;color:#3a7a5c;margin-top:4px}
 
 /* --- AGGIUNGI AL MIO ORDINE --- */
-.adding-banner{background:linear-gradient(90deg,var(--acc) 0%,#ffb800 100%);
-  color:var(--navy);padding:12px 16px;border-radius:12px;margin-bottom:14px;
+.adding-banner{background:linear-gradient(90deg,var(--navy) 0%,#ffb800 100%);
+  color:#213c4f;padding:12px 16px;border-radius:12px;margin-bottom:14px;
   display:flex;justify-content:space-between;align-items:center;gap:12px;
-  box-shadow:0 4px 14px rgba(255,196,46,.35);animation:slideDown .3s ease}
+  box-shadow:0 4px 14px rgba(254,193,68,.35);animation:slideDown .3s ease}
 @keyframes slideDown{from{transform:translateY(-8px);opacity:0}to{transform:none;opacity:1}}
 .adding-banner .ab-t{font-weight:800;font-size:14px}
 .adding-banner .ab-s{font-size:11.5px;opacity:.85;margin-top:2px}
@@ -265,7 +280,7 @@ button:disabled{cursor:default}
 .add-order-btn{width:100%;padding:14px;background:var(--panel2);color:var(--acc);
   border:2px dashed var(--acc);border-radius:12px;font-weight:700;font-size:14px;
   margin-top:14px;letter-spacing:.3px}
-.add-order-btn:hover{background:#2a3b63}
+.add-order-btn:hover{background:#ffdb87}
 
 /* --- TOUR OVERLAY --- */
 .tour-mask{position:fixed;inset:0;background:rgba(6,12,26,.82);z-index:200;
@@ -274,29 +289,52 @@ button:disabled{cursor:default}
 .tour-card{background:linear-gradient(180deg, var(--panel) 0%, var(--panel2) 100%);
   border:2px solid var(--acc);border-radius:22px;padding:24px;
   max-width:480px;width:100%;position:relative;
-  box-shadow:0 24px 60px rgba(0,0,0,.6), 0 0 0 6px rgba(255,196,46,.08);
+  box-shadow:0 24px 60px rgba(0,0,0,.6), 0 0 0 6px rgba(254,193,68,.08);
   margin-bottom:80px;animation:slideUp .4s cubic-bezier(.34,1.56,.64,1)}
 @keyframes slideUp{from{transform:translateY(30px);opacity:0}to{transform:none;opacity:1}}
 .tour-badge{position:absolute;top:-15px;left:20px;background:var(--acc);color:var(--navy);
   padding:6px 14px;border-radius:99px;font-weight:800;font-size:11px;letter-spacing:1.2px}
 .tour-card h3{margin:8px 0 10px;font-size:19px;letter-spacing:-.2px}
 .tour-card p{color:var(--txt);font-size:14px;line-height:1.55;margin:0}
-.tour-card .tip{background:rgba(255,196,46,.08);border-left:3px solid var(--acc);
+.tour-card .tip{background:rgba(254,193,68,.08);border-left:3px solid var(--acc);
   padding:10px 12px;border-radius:6px;margin-top:12px;font-size:13px;color:var(--dim)}
 .tour-card .tip b{color:var(--acc)}
 .tour-progress{display:flex;gap:5px;margin-top:18px}
 .tour-progress span{flex:1;height:4px;background:var(--line);border-radius:2px;transition:.3s}
-.tour-progress span.on{background:var(--acc);box-shadow:0 0 8px rgba(255,196,46,.5)}
-.tour-progress span.done{background:rgba(255,196,46,.4)}
+.tour-progress span.on{background:var(--acc);box-shadow:0 0 8px rgba(254,193,68,.5)}
+.tour-progress span.done{background:rgba(254,193,68,.4)}
 .tour-actions{display:flex;gap:10px;margin-top:16px}
 .tour-actions button{padding:12px 18px;border-radius:11px;font-weight:700;font-size:14px}
 .tour-skip{background:transparent;color:var(--dim);padding:12px 14px !important}
 .tour-back{background:var(--panel);color:var(--txt);border:1px solid var(--line)}
-.tour-next{background:var(--acc);color:var(--navy);flex:1;box-shadow:0 6px 16px rgba(255,196,46,.3)}
+.tour-next{background:var(--acc);color:var(--navy);flex:1;box-shadow:0 6px 16px rgba(254,193,68,.3)}
 .tour-start-fab{position:fixed;bottom:20px;right:20px;z-index:60;background:var(--acc);color:var(--navy);
   padding:14px 20px;border-radius:99px;font-weight:800;font-size:13px;letter-spacing:.5px;
   box-shadow:0 10px 28px rgba(0,0,0,.5);display:flex;align-items:center;gap:8px;
   animation:pulse 2.5s ease-in-out infinite}
+
+/* --- floating menu cliente --- */
+.cliente-fab{display:none;position:fixed;bottom:20px;right:20px;z-index:65;width:60px;height:60px;
+  border-radius:50%;background:var(--acc);padding:11px;
+  box-shadow:0 10px 28px rgba(33,60,79,.45);align-items:center;justify-content:center}
+.cliente-fab.show{display:flex}
+.cliente-fab img{width:100%;height:100%;object-fit:contain}
+.cliente-menu-mask{display:none;position:fixed;inset:0;background:rgba(6,12,26,.55);z-index:66;
+  align-items:flex-end;justify-content:center;padding:20px;backdrop-filter:blur(2px)}
+.cliente-menu-mask.show{display:flex;animation:fadeIn .25s ease}
+.cliente-menu-card{background:var(--panel);border:2px solid var(--acc);border-radius:22px;
+  padding:22px;max-width:420px;width:100%;box-shadow:0 24px 60px rgba(0,0,0,.4);
+  animation:slideUp .35s cubic-bezier(.34,1.56,.64,1)}
+.cliente-menu-card h3{margin:0 0 14px;font-size:20px}
+.cliente-menu-item{display:flex;align-items:center;gap:12px;width:100%;text-align:left;
+  padding:13px 10px;border-radius:12px;font-weight:700;font-size:14.5px;font-family:'Montserrat',sans-serif;
+  text-transform:none;letter-spacing:normal}
+.cliente-menu-item:hover{background:var(--panel2)}
+.cliente-menu-item .mi{font-size:20px;line-height:1;flex-shrink:0}
+.cliente-menu-sep{border-top:1px solid var(--line);margin:10px 0;padding-top:10px;
+  font-size:10.5px;text-transform:uppercase;letter-spacing:1.3px;color:var(--dim);font-weight:700}
+.cliente-menu-close{width:100%;margin-top:10px;padding:12px;color:var(--dim);font-size:13px;
+  font-family:'Montserrat',sans-serif;text-transform:none;letter-spacing:normal}
 
 /* login */
 .login{max-width:400px;margin:0 auto;padding:40px 20px;animation:fadeIn .4s ease}
@@ -309,6 +347,21 @@ button:disabled{cursor:default}
 .cat h2{font-size:15px;margin:0;text-transform:uppercase;letter-spacing:1.2px;color:var(--acc)}
 .eta{font-size:12px;color:var(--dim)}
 .eta.hot{color:var(--warn)}
+.menu-title{font-size:26px;margin:4px 0 16px}
+.cat-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
+.cat-tile{background:transparent;border:2px solid var(--line);border-radius:18px;padding:22px 12px 18px;
+  display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;position:relative;width:100%}
+.cat-tile:hover{border-color:var(--acc)}
+.cat-tile .ce{font-size:46px;line-height:1}
+.cat-tile .cn{font-size:16px}
+.cat-tile .cw{font-size:10.5px;color:var(--dim);font-weight:700;text-transform:none;
+  font-family:'Montserrat',sans-serif;letter-spacing:normal;margin-top:-4px}
+.cat-tile .cb{position:absolute;top:10px;right:10px;background:var(--acc);color:var(--navy);
+  font-size:10px;font-weight:800;padding:3px 9px;border-radius:99px;letter-spacing:.3px;
+  font-family:'Montserrat',sans-serif;text-transform:none}
+.cat-back{display:flex;align-items:center;gap:10px;margin:0 -14px 16px;color:var(--txt);
+  font-weight:400;background:transparent;border-bottom:1px solid var(--line);
+  padding:14px 18px;font-size:19px;width:calc(100% + 28px)}
 
 .item{display:flex;gap:12px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);
   border-radius:var(--r);padding:12px;margin-bottom:8px}
@@ -325,7 +378,7 @@ button:disabled{cursor:default}
 .qty span{min-width:16px;text-align:center;font-weight:700}
 .tag{display:inline-block;font-size:10.5px;padding:2px 7px;border-radius:99px;background:var(--panel2);
   border:1px solid var(--line);color:var(--dim);margin-top:5px}
-.tag.fast{color:var(--acc2);border-color:#2a4a38}
+.tag.fast{color:var(--acc2);border-color:#9fd6bb}
 
 .bar{position:fixed;bottom:0;left:0;right:0;background:var(--acc);color:var(--navy);padding:14px 18px;
   display:flex;justify-content:space-between;align-items:center;font-weight:700;max-width:460px;margin:0 auto;
@@ -350,7 +403,7 @@ button:disabled{cursor:default}
 .choice .q{font-size:12.5px;color:var(--dim);margin-bottom:12px}
 .opt2{display:flex;gap:12px;background:var(--panel);border:2px solid var(--line);border-radius:var(--r);
   padding:14px;margin-bottom:9px;align-items:flex-start;text-align:left;width:100%}
-.opt2.sel{border-color:var(--acc);background:#2a3b63}
+.opt2.sel{border-color:var(--acc);background:#ffdb87}
 .opt2 .ic{font-size:24px;line-height:1}
 .opt2 .t{font-weight:700;font-size:14.5px}
 .opt2 .s{font-size:12px;color:var(--dim);margin-top:3px}
@@ -359,22 +412,22 @@ button:disabled{cursor:default}
 .num .lbl{font-size:12px;color:var(--dim);text-transform:uppercase;letter-spacing:2px}
 .num .v{font-size:82px;font-weight:900;line-height:1;letter-spacing:-3px;margin-top:6px;
   color:var(--acc);text-shadow:3px 3px 0 rgba(0,0,0,.3)}
-.confirm{background:#3d3312;border:2px solid var(--acc);border-radius:var(--r);padding:16px;margin:16px 0}
+.confirm{background:#ffe9b8;border:2px solid var(--acc);border-radius:var(--r);padding:16px;margin:16px 0}
 .confirm h3{margin:0 0 6px;font-size:16px;color:var(--warn)}
-.confirm p{margin:0 0 12px;font-size:13px;color:#e3d3ad}
-.ready{background:#0d2a1a;border:1px solid var(--acc2);border-radius:var(--r);padding:18px;text-align:center;margin:16px 0;
+.confirm p{margin:0 0 12px;font-size:13px;color:#8a6a2e}
+.ready{background:#d7f3e3;border:1px solid var(--acc2);border-radius:var(--r);padding:18px;text-align:center;margin:16px 0;
   animation:readyPulse 2s ease-in-out infinite}
-@keyframes readyPulse{0%,100%{box-shadow:0 0 0 rgba(61,220,132,.4)}50%{box-shadow:0 0 24px rgba(61,220,132,.5)}}
+@keyframes readyPulse{0%,100%{box-shadow:0 0 0 rgba(21,121,74,.4)}50%{box-shadow:0 0 24px rgba(21,121,74,.5)}}
 .ready h3{margin:0 0 4px;color:var(--acc2);font-size:19px}
-.ready p{margin:0;font-size:13px;color:#a8d8bf}
+.ready p{margin:0;font-size:13px;color:#3a7a5c}
 .desk{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:14px;margin-bottom:10px}
 .desk .dh{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
 .desk .dn{font-weight:700;font-size:14px}
 .pill{font-size:11px;padding:3px 9px;border-radius:99px;font-weight:700}
-.pill.hold{background:#2a2450;color:var(--viola);border:1px solid #4b3f7d}
+.pill.hold{background:#ece4ff;color:var(--viola);border:1px solid #c9b8ee}
 .pill.wait{background:var(--panel2);color:var(--dim);border:1px solid var(--line)}
-.pill.prep{background:#3d3312;color:var(--acc);border:1px solid #6b5a1e}
-.pill.rdy{background:#0d2a1a;color:var(--acc2);border:1px solid #2a4a38}
+.pill.prep{background:#ffe9b8;color:var(--warn);border:1px solid #e0c078}
+.pill.rdy{background:#d7f3e3;color:var(--acc2);border:1px solid #9fd6bb}
 .desk .li{font-size:13.5px;padding:3px 0;color:var(--dim)}
 
 .kds{padding:14px}
@@ -384,13 +437,13 @@ button:disabled{cursor:default}
 .card{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--blue);border-radius:12px;padding:13px;
   animation:cardIn .35s ease;position:relative}
 .card.fresh{animation:cardIn .35s ease, freshPulse 1.6s ease-out}
-@keyframes freshPulse{0%{box-shadow:0 0 0 0 rgba(255,196,46,.7)}
-  70%{box-shadow:0 0 0 20px rgba(255,196,46,0)}
-  100%{box-shadow:0 0 0 0 rgba(255,196,46,0)}}
+@keyframes freshPulse{0%{box-shadow:0 0 0 0 rgba(254,193,68,.7)}
+  70%{box-shadow:0 0 0 20px rgba(254,193,68,0)}
+  100%{box-shadow:0 0 0 0 rgba(254,193,68,0)}}
 .card.fresh::after{content:'NUOVO';position:absolute;top:-8px;right:10px;background:var(--acc);color:var(--navy);
   font-size:10px;font-weight:900;padding:3px 8px;border-radius:99px;letter-spacing:1px;animation:fadeIn .3s}
 @keyframes cardIn{from{transform:translateY(8px);opacity:0}to{transform:none;opacity:1}}
-.card.late{border-left-color:var(--bad);background:#3a1e2a}
+.card.late{border-left-color:var(--bad);background:#ffd9d3}
 .card.prep{border-left-color:var(--acc)}
 .card.rdy{border-left-color:var(--acc2);opacity:.8}
 .card.held{border-left-color:var(--viola);opacity:.6}
@@ -402,19 +455,19 @@ button:disabled{cursor:default}
 .line{display:flex;gap:9px;padding:5px 0;font-size:14.5px;align-items:baseline}
 .line b{color:var(--acc);min-width:24px}
 .note{font-size:11.5px;padding:7px 9px;border-radius:8px;margin:8px 0 0;line-height:1.35}
-.note.v{background:#2a2450;color:#cbb6ff;border:1px solid #4b3f7d}
-.note.o{background:#3d3312;color:#f7dda0;border:1px solid #6b5a1e}
+.note.v{background:#ece4ff;color:#5b3fa8;border:1px solid #c9b8ee}
+.note.o{background:#ffe9b8;color:#8a5a00;border:1px solid #e0c078}
 .card .act{margin-top:9px;width:100%;padding:11px;border-radius:9px;font-weight:700;font-size:14px;
   background:var(--acc);color:var(--navy)}
-.card .act.g{background:var(--acc2);color:#04170c}
-.card .act.v{background:var(--viola);color:#1a0d33}
+.card .act.g{background:#d7f3e3;color:#0d3d24}
+.card .act.v{background:#ece4ff;color:#3a2570}
 .card .act.b{background:var(--panel2);color:var(--txt);border:1px solid var(--line)}
 .empty{color:var(--dim);text-align:center;padding:50px 20px;font-size:14px}
 .stat{display:flex;gap:16px;font-size:12px;color:var(--dim)}
 .stat b{color:var(--txt);font-size:16px;display:block}
-.paid-badge{display:inline-block;background:rgba(61,220,132,.15);color:var(--acc2);
+.paid-badge{display:inline-block;background:rgba(21,121,74,.15);color:var(--acc2);
   padding:2px 8px;border-radius:99px;font-size:11px;font-weight:800;letter-spacing:.5px;
-  border:1px solid rgba(61,220,132,.4);margin-left:6px}
+  border:1px solid rgba(21,121,74,.4);margin-left:6px}
 
 .tv{padding:28px;min-height:70vh}
 .tvhd{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;padding-bottom:16px;
@@ -430,10 +483,10 @@ button:disabled{cursor:default}
 .tvn{font-size:40px;font-weight:800;padding:10px 18px;border-radius:14px;background:var(--panel);
   border:2px solid var(--line);letter-spacing:-2px;text-align:center}
 .tvn small{display:block;font-size:11px;letter-spacing:2px;font-weight:700;color:var(--dim);margin-top:2px}
-.tvcol.r .tvn{background:#0d2a1a;border-color:var(--acc2);color:var(--acc2);
+.tvcol.r .tvn{background:#d7f3e3;border-color:var(--acc2);color:var(--acc2);
   animation:tvBlink 1.6s ease-in-out infinite}
-@keyframes tvBlink{0%,100%{box-shadow:0 0 0 rgba(61,220,132,.3)}50%{box-shadow:0 0 32px rgba(61,220,132,.7)}}
-.tvcol.r .tvn small{color:#7bbd99}
+@keyframes tvBlink{0%,100%{box-shadow:0 0 0 rgba(21,121,74,.3)}50%{box-shadow:0 0 32px rgba(21,121,74,.7)}}
+.tvcol.r .tvn small{color:#3a7a5c}
 @media(max-width:600px){.tvcols{grid-template-columns:1fr}.tvn{font-size:30px}}
 </style>
 </head>
@@ -449,15 +502,19 @@ button:disabled{cursor:default}
 <div id="soMask"></div>
 <div id="soPicker"></div>
 
+<button class="cliente-fab" id="clienteFab" onclick="toggleClienteMenu(true)">
+  <img src="assets/logo-floating-menu.png" alt="Menu"></button>
+<div class="cliente-menu-mask" id="clienteMenuMask" onclick="if(event.target===this)toggleClienteMenu(false)"></div>
+
 <script>
 /* ================= BOZZA MENU (sostituibile) ================= */
 const CATS = [
-  {id:'frigo', nome:'Birre & Bibite fredde', staz:'frigo', prep:2,  max:99, fast:true},
-  {id:'spina', nome:'Birre alla spina',       staz:'bar',   prep:5,  max:14},
-  {id:'cock',  nome:'Cocktail',               staz:'bar',   prep:12, max:8},
-  {id:'pizza', nome:'Pizze',                  staz:'cucina',prep:20, max:16},
-  {id:'fritti',nome:'Fritti & Street food',   staz:'cucina',prep:12, max:20},
-  {id:'dolci', nome:'Dolci',                  staz:'cucina',prep:4,  max:20},
+  {id:'frigo', nome:'Birre & Bibite fredde', emoji:'🥤', staz:'frigo', prep:2,  max:99, fast:true},
+  {id:'spina', nome:'Birre alla spina',       emoji:'🍺', staz:'bar',   prep:5,  max:14},
+  {id:'cock',  nome:'Cocktail',               emoji:'🍸', staz:'bar',   prep:12, max:8},
+  {id:'pizza', nome:'Pizze',                  emoji:'🍕', staz:'cucina',prep:20, max:16},
+  {id:'fritti',nome:'Fritti & Street food',   emoji:'🍟', staz:'cucina',prep:12, max:20},
+  {id:'dolci', nome:'Dolci',                  emoji:'🍰', staz:'cucina',prep:4,  max:20},
 ];
 const ITEMS = [
   {c:'frigo', n:'Peroni 33cl',            d:'Bottiglia ghiacciata',               p:400},
@@ -495,7 +552,7 @@ const ITEMS = [
 ].map((x,i)=>({...x,id:i+1,out:false}));
 
 /* ================= STATO ================= */
-let role='cliente', view='qr', cart={}, orders=[], seq=100, user=null, timing='insieme';
+let role='cliente', view='qr', cart={}, orders=[], seq=100, user=null, timing='insieme', menuCat=null;
 let LOG=[], adminTab='menu', addingTo=null, helpStep='menu';
 const ATTORI={menu:'Gestore',bar:'Bar',cucina:'Cucina',cassa:'Cassa',cliente:'Cliente',sistema:'Sistema'};
 function log(attore,tipo,testo,critico){
@@ -582,6 +639,10 @@ const HINTS={
  admin:'Backoffice del gestore, protetto da PIN (demo: 1234). Prezzi, disponibilità, log, sospensione.'
 };
 function drawRoles(){
+  const cliente = role==='cliente';
+  document.getElementById('roles').style.display = cliente ? 'none' : 'flex';
+  document.getElementById('hint').style.display = cliente ? 'none' : 'flex';
+  document.getElementById('clienteFab').classList.toggle('show', cliente);
   document.getElementById('roles').innerHTML=
     '<span class="demo-brand">DEMO</span>' +
     ROLES.map(([r,l])=>
@@ -589,6 +650,24 @@ function drawRoles(){
   document.getElementById('hint').innerHTML =
     `<span>${HINTS[role]}</span>` +
     (tourStep<0 ? `<button class="tour-restart" onclick="startTour()">🎬 Tour guidato</button>` : '');
+}
+function toggleClienteMenu(show){
+  const mask=document.getElementById('clienteMenuMask');
+  if(show){
+    mask.innerHTML = `<div class="cliente-menu-card">
+      <h3>Menu</h3>
+      <button class="cliente-menu-item" onclick="toggleClienteMenu(false);view='menu';addingTo=null;draw()"><span class="mi">🍽️</span> Torna al menu</button>
+      <a href="tel:+390810000000" class="cliente-menu-item" style="text-decoration:none"><span class="mi">📞</span> Chiama il locale</a>
+      <button class="cliente-menu-item" onclick="toggleClienteMenu(false);showPrivacyInfo()"><span class="mi">🔐</span> Privacy e i miei dati</button>
+      <div class="cliente-menu-sep">Solo per questa demo</div>
+      ${ROLES.map(([r,l])=>`<button class="cliente-menu-item" onclick="toggleClienteMenu(false);setRole('${r}')"><span class="mi">${l.split(' ')[0]}</span> ${l.split(' ').slice(1).join(' ')}</button>`).join('')}
+      <button class="cliente-menu-close" onclick="toggleClienteMenu(false)">Chiudi</button>
+    </div>`;
+    mask.classList.add('show');
+  } else {
+    mask.classList.remove('show');
+    setTimeout(()=>mask.innerHTML='',200);
+  }
 }
 function setRole(r){role=r;if(r==='cliente'&&!user)view='qr';drawRoles();draw()}
 function draw(){
@@ -610,7 +689,7 @@ function draw(){
 const TOUR = [
   {role:'cliente', view:'qr', title:'📱 Il cliente al tavolo 14',
    text:'Marco è a The Bench per la partita. Al banco c\'è coda di 40 minuti. Inquadra il QR sul suo tavolo col telefono — nessuna app da scaricare.',
-   tip:'<b>Zero attrito.</b> Basta la fotocamera, nemmeno serve digitare l\'URL.'},
+   tip:'<b>Nessun attrito.</b> Basta la fotocamera, nemmeno serve digitare l\'URL.'},
   {role:'cliente', view:'login', title:'🚀 Accesso in 10 secondi',
    text:'Nome, email, telefono. Nessuna password. L\'ordine parte subito. Alla prossima visita l\'app lo riconosce e lo saluta per nome.',
    tip:'<b>Il vantaggio invisibile:</b> il locale costruisce una lista clienti reale (email + cellulare) che oggi non esiste.'},
@@ -731,57 +810,34 @@ function verifyOtp(){
   if(otpDigits.length!==6) return;
   user={email:'marco.r@gmail.com',nome:'Marco R.',tel:'333 1234567',mkt:false,verified:true};
   log('cliente','ordine',`Marco R. (marco.r@gmail.com) accesso al 2° ordine · OTP email verificato`);
-  otpDigits='';view='menu';draw();
+  otpDigits='';view='menu';menuCat=null;draw();
 }
 
 function qrLanding(){
   return `<div class="qr-page">
-    <div class="logo"><b>THE</b><b class="big">BENCH</b></div>
-    <h1>Benvenuto al tavolo</h1>
-    <div class="sub">Ordina dal telefono, aspetta seduto, ritira quando è pronto.</div>
+    <img class="logo" src="assets/logo-the-bench.png" alt="The Bench">
+    <div class="qr-claim">INQUADRA IL CODICE QR<br>SUL TAVOLO PER ORDINARE</div>
     <div class="qr-frame">
       <div class="qr-corners"><span></span><span></span><span></span><span></span></div>
       <div class="qr-scan"></div>
       ${qrSvg()}
     </div>
-    <div class="qr-instr">📷 Inquadra il QR con la fotocamera</div>
+    <div class="qr-instr">📷 Basta la fotocamera del telefono, nessuna app da scaricare</div>
     <button class="qr-open" onclick="view='login';draw()">SIMULA SCANSIONE QR →</button>
     <button onclick="view='otp';draw()" style="margin-top:12px;color:var(--dim);
       background:transparent;border:1px solid var(--line);padding:10px 20px;border-radius:99px;font-size:12.5px">
       🔄 Sei già stato qui? Simula 2° accesso →
     </button>
-    <div class="qr-foot">Nella realtà: apri la fotocamera, inquadri, tocchi la notifica. Zero attrito.</div>
+    <div class="qr-foot">Nella realtà: apri la fotocamera, inquadri, tocchi la notifica che appare.</div>
   </div>`;
 }
-function qrSvg(){
-  // QR-like decorative pattern (non funzionale, solo visivo)
-  const cells = 21;
-  let squares = '';
-  const fixed = [[0,0],[0,cells-7],[cells-7,0]];
-  fixed.forEach(([r,c])=>{
-    squares += `<rect x="${c*10}" y="${r*10}" width="70" height="70" fill="#152441"/>
-                <rect x="${c*10+10}" y="${r*10+10}" width="50" height="50" fill="#fff"/>
-                <rect x="${c*10+20}" y="${r*10+20}" width="30" height="30" fill="#152441"/>`;
-  });
-  const seed=[[3,3,1],[3,4,0],[3,5,1],[3,6,1],[3,7,0],[3,8,1],[3,9,1],[3,10,0],[3,11,1],
-    [4,3,0],[4,5,1],[4,7,0],[4,9,1],[4,11,0],[4,13,1],
-    [5,3,1],[5,4,1],[5,5,0],[5,7,1],[5,9,0],[5,11,1],[5,13,0],[5,14,1],
-    [6,4,0],[6,5,1],[6,6,1],[6,8,0],[6,10,1],[6,12,0],[6,13,1],
-    [7,3,1],[7,4,0],[7,5,1],[7,7,1],[7,9,1],[7,11,0],[7,13,1],[7,14,0],
-    [8,4,1],[8,6,0],[8,8,1],[8,10,0],[8,12,1],[8,14,1],
-    [9,3,0],[9,5,1],[9,7,0],[9,9,1],[9,11,1],[9,13,0],[9,14,1],
-    [10,4,1],[10,5,0],[10,7,1],[10,9,0],[10,11,1],[10,13,1],
-    [11,3,1],[11,4,1],[11,6,0],[11,8,1],[11,10,0],[11,12,1],[11,14,0],
-    [12,3,0],[12,5,1],[12,7,1],[12,9,0],[12,11,1],[12,13,0],[12,14,1],
-    [13,4,1],[13,6,0],[13,8,1],[13,10,1],[13,12,0],[13,14,1],
-    [14,3,1],[14,4,0],[14,5,1],[14,7,0],[14,9,1],[14,11,0],[14,13,1]];
-  seed.forEach(([r,c,v])=>{if(v)squares+=`<rect x="${c*10}" y="${r*10}" width="10" height="10" fill="#152441"/>`});
-  return `<svg viewBox="0 0 210 210" xmlns="http://www.w3.org/2000/svg">${squares}</svg>`;
+function qrSvg() {
+  return `<svg viewBox="0 0 290 290" xmlns="http://www.w3.org/2000/svg"><rect width="100%" height="100%" fill="#fff"/><g fill="#152441"><rect x="0" y="0" width="70" height="10"/><rect x="90" y="0" width="10" height="10"/><rect x="110" y="0" width="10" height="10"/><rect x="130" y="0" width="10" height="10"/><rect x="160" y="0" width="10" height="10"/><rect x="180" y="0" width="20" height="10"/><rect x="220" y="0" width="70" height="10"/><rect x="0" y="10" width="10" height="10"/><rect x="60" y="10" width="10" height="10"/><rect x="80" y="10" width="10" height="10"/><rect x="110" y="10" width="20" height="10"/><rect x="140" y="10" width="40" height="10"/><rect x="190" y="10" width="10" height="10"/><rect x="220" y="10" width="10" height="10"/><rect x="280" y="10" width="10" height="10"/><rect x="0" y="20" width="10" height="10"/><rect x="20" y="20" width="30" height="10"/><rect x="60" y="20" width="10" height="10"/><rect x="90" y="20" width="20" height="10"/><rect x="130" y="20" width="20" height="10"/><rect x="160" y="20" width="10" height="10"/><rect x="190" y="20" width="10" height="10"/><rect x="220" y="20" width="10" height="10"/><rect x="240" y="20" width="30" height="10"/><rect x="280" y="20" width="10" height="10"/><rect x="0" y="30" width="10" height="10"/><rect x="20" y="30" width="30" height="10"/><rect x="60" y="30" width="10" height="10"/><rect x="90" y="30" width="10" height="10"/><rect x="110" y="30" width="50" height="10"/><rect x="180" y="30" width="10" height="10"/><rect x="220" y="30" width="10" height="10"/><rect x="240" y="30" width="30" height="10"/><rect x="280" y="30" width="10" height="10"/><rect x="0" y="40" width="10" height="10"/><rect x="20" y="40" width="30" height="10"/><rect x="60" y="40" width="10" height="10"/><rect x="80" y="40" width="10" height="10"/><rect x="100" y="40" width="30" height="10"/><rect x="140" y="40" width="10" height="10"/><rect x="190" y="40" width="20" height="10"/><rect x="220" y="40" width="10" height="10"/><rect x="240" y="40" width="30" height="10"/><rect x="280" y="40" width="10" height="10"/><rect x="0" y="50" width="10" height="10"/><rect x="60" y="50" width="10" height="10"/><rect x="130" y="50" width="10" height="10"/><rect x="170" y="50" width="10" height="10"/><rect x="190" y="50" width="20" height="10"/><rect x="220" y="50" width="10" height="10"/><rect x="280" y="50" width="10" height="10"/><rect x="0" y="60" width="70" height="10"/><rect x="80" y="60" width="10" height="10"/><rect x="100" y="60" width="10" height="10"/><rect x="120" y="60" width="10" height="10"/><rect x="140" y="60" width="10" height="10"/><rect x="160" y="60" width="10" height="10"/><rect x="180" y="60" width="10" height="10"/><rect x="200" y="60" width="10" height="10"/><rect x="220" y="60" width="70" height="10"/><rect x="110" y="70" width="10" height="10"/><rect x="130" y="70" width="20" height="10"/><rect x="160" y="70" width="20" height="10"/><rect x="200" y="70" width="10" height="10"/><rect x="0" y="80" width="10" height="10"/><rect x="20" y="80" width="10" height="10"/><rect x="40" y="80" width="10" height="10"/><rect x="60" y="80" width="10" height="10"/><rect x="90" y="80" width="20" height="10"/><rect x="120" y="80" width="10" height="10"/><rect x="140" y="80" width="20" height="10"/><rect x="170" y="80" width="10" height="10"/><rect x="190" y="80" width="20" height="10"/><rect x="240" y="80" width="10" height="10"/><rect x="270" y="80" width="10" height="10"/><rect x="10" y="90" width="10" height="10"/><rect x="30" y="90" width="10" height="10"/><rect x="50" y="90" width="10" height="10"/><rect x="70" y="90" width="10" height="10"/><rect x="90" y="90" width="20" height="10"/><rect x="140" y="90" width="20" height="10"/><rect x="170" y="90" width="20" height="10"/><rect x="200" y="90" width="30" height="10"/><rect x="250" y="90" width="10" height="10"/><rect x="280" y="90" width="10" height="10"/><rect x="0" y="100" width="30" height="10"/><rect x="50" y="100" width="20" height="10"/><rect x="110" y="100" width="10" height="10"/><rect x="130" y="100" width="10" height="10"/><rect x="180" y="100" width="10" height="10"/><rect x="210" y="100" width="20" height="10"/><rect x="260" y="100" width="30" height="10"/><rect x="0" y="110" width="10" height="10"/><rect x="40" y="110" width="10" height="10"/><rect x="70" y="110" width="10" height="10"/><rect x="90" y="110" width="40" height="10"/><rect x="150" y="110" width="10" height="10"/><rect x="170" y="110" width="10" height="10"/><rect x="190" y="110" width="20" height="10"/><rect x="230" y="110" width="10" height="10"/><rect x="270" y="110" width="10" height="10"/><rect x="0" y="120" width="10" height="10"/><rect x="20" y="120" width="20" height="10"/><rect x="60" y="120" width="10" height="10"/><rect x="80" y="120" width="10" height="10"/><rect x="110" y="120" width="10" height="10"/><rect x="160" y="120" width="70" height="10"/><rect x="250" y="120" width="10" height="10"/><rect x="270" y="120" width="20" height="10"/><rect x="20" y="130" width="40" height="10"/><rect x="70" y="130" width="40" height="10"/><rect x="120" y="130" width="20" height="10"/><rect x="150" y="130" width="20" height="10"/><rect x="200" y="130" width="30" height="10"/><rect x="250" y="130" width="10" height="10"/><rect x="280" y="130" width="10" height="10"/><rect x="0" y="140" width="10" height="10"/><rect x="30" y="140" width="10" height="10"/><rect x="50" y="140" width="20" height="10"/><rect x="90" y="140" width="40" height="10"/><rect x="140" y="140" width="40" height="10"/><rect x="210" y="140" width="10" height="10"/><rect x="230" y="140" width="30" height="10"/><rect x="270" y="140" width="20" height="10"/><rect x="0" y="150" width="30" height="10"/><rect x="40" y="150" width="10" height="10"/><rect x="100" y="150" width="10" height="10"/><rect x="120" y="150" width="30" height="10"/><rect x="160" y="150" width="70" height="10"/><rect x="250" y="150" width="10" height="10"/><rect x="270" y="150" width="10" height="10"/><rect x="0" y="160" width="10" height="10"/><rect x="40" y="160" width="10" height="10"/><rect x="60" y="160" width="10" height="10"/><rect x="100" y="160" width="20" height="10"/><rect x="140" y="160" width="20" height="10"/><rect x="170" y="160" width="10" height="10"/><rect x="200" y="160" width="30" height="10"/><rect x="250" y="160" width="10" height="10"/><rect x="270" y="160" width="20" height="10"/><rect x="10" y="170" width="10" height="10"/><rect x="30" y="170" width="10" height="10"/><rect x="70" y="170" width="20" height="10"/><rect x="110" y="170" width="20" height="10"/><rect x="140" y="170" width="20" height="10"/><rect x="170" y="170" width="20" height="10"/><rect x="200" y="170" width="30" height="10"/><rect x="250" y="170" width="20" height="10"/><rect x="280" y="170" width="10" height="10"/><rect x="0" y="180" width="10" height="10"/><rect x="50" y="180" width="20" height="10"/><rect x="90" y="180" width="10" height="10"/><rect x="110" y="180" width="10" height="10"/><rect x="130" y="180" width="10" height="10"/><rect x="200" y="180" width="10" height="10"/><rect x="220" y="180" width="10" height="10"/><rect x="240" y="180" width="10" height="10"/><rect x="270" y="180" width="20" height="10"/><rect x="10" y="190" width="10" height="10"/><rect x="40" y="190" width="10" height="10"/><rect x="110" y="190" width="20" height="10"/><rect x="150" y="190" width="10" height="10"/><rect x="170" y="190" width="10" height="10"/><rect x="190" y="190" width="20" height="10"/><rect x="220" y="190" width="40" height="10"/><rect x="270" y="190" width="10" height="10"/><rect x="0" y="200" width="10" height="10"/><rect x="20" y="200" width="20" height="10"/><rect x="60" y="200" width="20" height="10"/><rect x="90" y="200" width="10" height="10"/><rect x="110" y="200" width="20" height="10"/><rect x="160" y="200" width="30" height="10"/><rect x="200" y="200" width="50" height="10"/><rect x="80" y="210" width="20" height="10"/><rect x="130" y="210" width="10" height="10"/><rect x="150" y="210" width="20" height="10"/><rect x="190" y="210" width="20" height="10"/><rect x="240" y="210" width="10" height="10"/><rect x="260" y="210" width="30" height="10"/><rect x="0" y="220" width="70" height="10"/><rect x="90" y="220" width="20" height="10"/><rect x="120" y="220" width="10" height="10"/><rect x="140" y="220" width="40" height="10"/><rect x="190" y="220" width="20" height="10"/><rect x="220" y="220" width="10" height="10"/><rect x="240" y="220" width="20" height="10"/><rect x="270" y="220" width="20" height="10"/><rect x="0" y="230" width="10" height="10"/><rect x="60" y="230" width="10" height="10"/><rect x="100" y="230" width="50" height="10"/><rect x="160" y="230" width="30" height="10"/><rect x="200" y="230" width="10" height="10"/><rect x="240" y="230" width="20" height="10"/><rect x="270" y="230" width="20" height="10"/><rect x="0" y="240" width="10" height="10"/><rect x="20" y="240" width="30" height="10"/><rect x="60" y="240" width="10" height="10"/><rect x="80" y="240" width="30" height="10"/><rect x="120" y="240" width="10" height="10"/><rect x="140" y="240" width="50" height="10"/><rect x="200" y="240" width="50" height="10"/><rect x="270" y="240" width="10" height="10"/><rect x="0" y="250" width="10" height="10"/><rect x="20" y="250" width="30" height="10"/><rect x="60" y="250" width="10" height="10"/><rect x="90" y="250" width="10" height="10"/><rect x="110" y="250" width="50" height="10"/><rect x="170" y="250" width="20" height="10"/><rect x="230" y="250" width="20" height="10"/><rect x="260" y="250" width="10" height="10"/><rect x="0" y="260" width="10" height="10"/><rect x="20" y="260" width="30" height="10"/><rect x="60" y="260" width="10" height="10"/><rect x="80" y="260" width="20" height="10"/><rect x="110" y="260" width="10" height="10"/><rect x="160" y="260" width="10" height="10"/><rect x="180" y="260" width="20" height="10"/><rect x="230" y="260" width="30" height="10"/><rect x="280" y="260" width="10" height="10"/><rect x="0" y="270" width="10" height="10"/><rect x="60" y="270" width="10" height="10"/><rect x="90" y="270" width="20" height="10"/><rect x="150" y="270" width="90" height="10"/><rect x="270" y="270" width="10" height="10"/><rect x="0" y="280" width="70" height="10"/><rect x="80" y="280" width="30" height="10"/><rect x="120" y="280" width="10" height="10"/><rect x="170" y="280" width="20" height="10"/><rect x="200" y="280" width="10" height="10"/><rect x="220" y="280" width="40" height="10"/><rect x="270" y="280" width="20" height="10"/></g></svg>`;
 }
 
 function login(){
   return `<div class="check"></div><div class="login">
-    <div class="logo"><b>THE</b><b class="big">BENCH</b></div>
+    <img class="logo" src="assets/logo-the-bench.png" alt="The Bench">
     <h1 style="text-align:center">Ordina dal tavolo</h1>
     <div class="sub" style="text-align:center">Niente fila, ti avvisiamo noi</div>
 
@@ -809,8 +865,9 @@ function login(){
     <label class="chk"><input type="checkbox" id="l_mkt">
       Voglio ricevere via email le novità e gli eventi del locale. Posso disiscrivermi quando voglio.</label>
     <button class="cta" id="l_btn" onclick="entra()">Entra e ordina</button>
-    <div class="why">L'email ti serve per il riepilogo e per ritrovarti alla prossima visita.
-      Il consenso alle comunicazioni è separato e facoltativo.</div>
+    <div class="why">🔐 I tuoi dati sono protetti: li usiamo solo per l'ordine e per ritrovarti alla prossima visita,
+      il consenso alle comunicazioni è separato e facoltativo.
+      <a href="javascript:void(0)" onclick="showPrivacyInfo()" style="color:var(--acc);font-weight:700">Come trattiamo i tuoi dati →</a></div>
   </div>`;
 }
 function socialLogin(provider){
@@ -822,7 +879,7 @@ function socialLogin(provider){
   };
   user = profiles[provider];
   log('cliente','ordine',`Accesso via ${provider==='google'?'Google':'Apple'} · ${user.email} · verifica automatica, no OTP richiesto`);
-  view='menu';draw();
+  view='menu';menuCat=null;draw();
 }
 function chkLogin(){
   const m=document.getElementById('l_mail').value, n=document.getElementById('l_nome').value;
@@ -833,14 +890,16 @@ function entra(){
         nome:document.getElementById('l_nome').value.trim(),
         tel:document.getElementById('l_tel').value.trim(),
         mkt:document.getElementById('l_mkt').checked};
-  view='menu';draw();
+  view='menu';menuCat=null;draw();
 }
 
 function menu(){
-  let h=`<div class="check thin"></div><div class="phone"><div class="head">
-    <div class="logo-s"><div class="dot">THE<br>BENCH</div><div>
-    <h1>Ciao ${user.nome.split(' ')[0]}</h1><div class="tavolo">The Bench · Bar Sport</div></div></div>
-    <div class="badge">🕐 aperto</div></div>`;
+  let h=`<div class="check tall"></div>
+    <div class="client-head">
+      <div class="logo-badge"><img src="assets/logo-the-bench.png" alt="The Bench"></div>
+      <div><h1>Ciao ${user.nome.split(' ')[0]}</h1><div class="tavolo">Sei seduto al tavolo <b class="tavolo-n">14</b></div></div>
+    </div>
+    <div class="phone" style="padding-top:14px">`;
   if(addingTo){
     h+=`<div class="adding-banner">
       <div><div class="ab-t">➕ Aggiungi all'ordine #${addingTo}</div>
@@ -848,9 +907,23 @@ function menu(){
       <button onclick="cancelAdd()">Annulla</button>
     </div>`;
   }
-  for(const c of CATS){
+  if(!menuCat){
+    h+=`<h1 class="menu-title">Menu</h1><div class="cat-grid">`;
+    for(const c of CATS){
+      const e=etaOf(c.id), hot=e>c.prep*1.6, tot=ITEMS.filter(i=>i.c===c.id).length;
+      h+=`<button class="cat-tile" onclick="menuCat='${c.id}';draw()">
+        ${hot?'<span class="cb">richiesto</span>':''}
+        <span class="ce">${c.emoji}</span>
+        <span class="cn">${c.nome}</span>
+        <span class="cw">${tot} prodotti · ~${e} min</span>
+      </button>`;
+    }
+    h+=`</div>`;
+  } else {
+    const c=cat(menuCat);
     const e=etaOf(c.id), hot=e>c.prep*1.6;
-    h+=`<div class="cat"><h2>${c.nome}</h2><span class="eta ${hot?'hot':''}">~${e} min</span></div>`;
+    h+=`<button class="cat-back" onclick="menuCat=null;draw()">← Tutte le categorie</button>
+      <div class="cat"><h2>${c.emoji} ${c.nome}</h2><span class="eta ${hot?'hot':''}">~${e} min</span></div>`;
     for(const it of ITEMS.filter(i=>i.c===c.id)){
       const q=cart[it.id]||0, out=isOut(it);
       h+=`<div class="item ${out?'out':''}"><div class="info">
@@ -996,6 +1069,19 @@ function annulla(id){const o=orders.find(x=>x.id===id);
 let helpOrderId=null, helpView='menu';
 function openHelp(id){helpOrderId=id;helpView='menu';renderHelp()}
 function closeHelp(){helpOrderId=null;document.getElementById('helpMask').innerHTML=''}
+function showPrivacyInfo(){
+  document.getElementById('helpMask').innerHTML = `<div class="help-mask"><div class="help-card">
+    <h3>🔐 Privacy e i tuoi dati</h3>
+    <div class="hs">Come trattiamo nome, email e cellulare che ci lasci per ordinare.</div>
+    <p style="font-size:13px;line-height:1.65;color:var(--txt);margin:0 0 16px">
+      Usiamo i tuoi dati solo per gestire l'ordine e ritrovarti alla prossima visita.
+      Se hai dato il consenso, ti scriviamo anche per novità ed eventi — puoi ritirarlo quando vuoi.
+      Non li vendiamo e non li passiamo a terzi. Puoi chiedere di vederli, correggerli o cancellarli scrivendo al locale.
+      Titolare del trattamento: The Bench. Informativa completa (art. 13 GDPR) disponibile su richiesta al banco.
+    </p>
+    <button class="help-close" onclick="closeHelp()">Chiudi</button>
+  </div></div>`;
+}
 function renderHelp(){
   const el=document.getElementById('helpMask');
   if(!helpOrderId){el.innerHTML='';return}
@@ -1326,39 +1412,41 @@ let setupStep='station', setupPin='';
 function viewSetupTablet(st){
   const labels={bar:'🍹 KDS BAR',cucina:'🍕 KDS CUCINA',cassa:'💶 CASSA'};
   const descs={
-    bar:'Vedrà solo le righe bibite. Il barista lavora qui.',
-    cucina:'Vedrà solo le righe cibo. Il cuoco lavora qui.',
-    cassa:'Vedrà tutti gli ordini pronti al ritiro con stato pagamento.'
+    bar:'Solo le comande di birre, cocktail e bibite: il barista lavora da qui.',
+    cucina:'Solo le comande di cucina: il cuoco lavora da qui.',
+    cassa:'Tutti gli ordini pronti per il ritiro, con chi ha già pagato in app.'
   };
   if(setupStep==='station'){
     return `<div class="setup-page"><div class="setup-box">
-      <div class="stp">PRIMO AVVIO · 1 di 3</div>
-      <h1>Configura questo tablet</h1>
-      <div class="ssub">Questa scelta resta memorizzata sul dispositivo per sempre.
-        Nel sistema vero: <b style="color:var(--acc)">device_id</b> registrato in DB, richiede il PIN del manager per essere modificato.</div>
+      <div class="stp">PRIMA VOLTA SU QUESTO TABLET · Passo 1 di 3</div>
+      <h1>Ciao! Da dove lavori stasera?</h1>
+      <div class="ssub">Scegli la postazione una volta sola: da qui in poi questo tablet si aprirà
+        sempre già pronto sulla vista giusta, senza doverla riselezionare a ogni turno.
+        Per cambiarla in futuro basterà il PIN del gestore.</div>
       ${['bar','cucina','cassa'].map(s=>`
         <button class="stat-card ${s===st?'sel':''}" onclick="chooseStation('${s}')">
           <div class="si">${labels[s].split(' ')[0]}</div>
           <div><div class="st">${labels[s]}</div><div class="sd">${descs[s]}</div></div>
         </button>`).join('')}
       <div style="font-size:11.5px;color:var(--dim);margin-top:14px">
-        Suggerito: <b style="color:var(--acc)">${labels[st]}</b> (hai aperto quel ruolo)
+        Ti consigliamo <b style="color:var(--acc)">${labels[st]}</b>, visto che hai aperto proprio quella sezione.
       </div>
     </div></div>`;
   }
   if(setupStep==='pin'){
     return `<div class="setup-page"><div class="setup-box">
-      <div class="stp">PRIMO AVVIO · 2 di 3</div>
-      <h1>Imposta un PIN operatore</h1>
-      <div class="ssub">4 cifre. Serve per rientrare rapidamente se lo schermo si blocca.
-        Il PIN è del <b>dispositivo</b>, non della persona: gli operatori del turno lo conoscono tutti.</div>
+      <div class="stp">PRIMA VOLTA SU QUESTO TABLET · Passo 2 di 3</div>
+      <h1>Scegli un PIN per questo tablet</h1>
+      <div class="ssub">Quattro numeri facili da ricordare per tutta la squadra: se lo schermo si blocca
+        o qualcuno esce per sbaglio dalla schermata, si rientra subito senza richiamare il gestore.
+        Non è un PIN personale: lo useranno tutti quelli che lavorano a questa postazione durante il turno.</div>
       <div class="pin-input">
         ${[0,1,2,3].map(i=>`<input type="tel" maxlength="1" id="pin${i}"
           oninput="pinType(${i},this.value)" placeholder="•">`).join('')}
       </div>
-      <button class="cta" onclick="savePin()" ${setupPin.length===4?'':'disabled'}>Salva PIN e continua</button>
+      <button class="cta" onclick="savePin()" ${setupPin.length===4?'':'disabled'}>Salva e continua</button>
       <div style="font-size:11.5px;color:var(--dim);margin-top:10px">
-        Demo: qualsiasi 4 cifre. Salva.
+        Per questa demo va bene una combinazione qualsiasi di 4 numeri.
       </div>
     </div></div>`;
   }
@@ -1366,16 +1454,16 @@ function viewSetupTablet(st){
     return `<div class="setup-page"><div class="setup-box">
       <div class="setup-done">
         <div class="sd-i">✓</div>
-        <h2>Tablet configurato</h2>
-        <p>Questo tablet è ora <b style="color:var(--acc)">${labels[st]}</b>.
-        Sarà iscritto solo agli ordini della sua stazione.</p>
+        <h2>Tutto pronto</h2>
+        <p>Da ora questo tablet mostra solo gli ordini di <b style="color:var(--acc)">${labels[st]}</b>.
+        Niente più schermate da scegliere: al prossimo avvio basta il PIN.</p>
       </div>
-      <div class="dev-line"><span>Stazione</span><b>${labels[st]}</b></div>
-      <div class="dev-line"><span>Device ID</span><b>tb-${st}-${Math.floor(now()/1000)%100000}</b></div>
+      <div class="dev-line"><span>Postazione</span><b>${labels[st]}</b></div>
+      <div class="dev-line"><span>Codice tablet</span><b>tb-${st}-${Math.floor(now()/1000)%100000}</b></div>
       <div class="dev-line"><span>PIN</span><b>••••</b></div>
-      <div class="dev-line"><span>Registrato da</span><b>Manager (demo)</b></div>
-      <div class="dev-line"><span>Prossimo accesso</span><b>Solo PIN, no login</b></div>
-      <button class="cta" style="margin-top:20px" onclick="finishSetup('${st}')">Inizia turno →</button>
+      <div class="dev-line"><span>Configurato da</span><b>Gestore (demo)</b></div>
+      <div class="dev-line"><span>Al prossimo avvio</span><b>Solo PIN, si salta il login</b></div>
+      <button class="cta" style="margin-top:20px" onclick="finishSetup('${st}')">Inizia il turno →</button>
     </div></div>`;
   }
 }
@@ -1413,14 +1501,14 @@ function resetDevice(st){
 }
 function viewAdmin(){
   if(!adminOk) return `<div class="login">
-    <div class="logo"><b>THE</b><b class="big">BENCH</b></div>
+    <img class="logo" src="assets/logo-the-bench.png" alt="The Bench">
     <h1 style="text-align:center;font-size:20px">Area gestore</h1>
     <div class="sub" style="text-align:center">Inserisci il PIN operatore</div>
     <div class="field"><input id="pin" inputmode="numeric" placeholder="••••"
       style="text-align:center;font-size:26px;letter-spacing:10px" value="1234"></div>
     <button class="cta" onclick="pinOk()">Entra</button>
-    <div class="why">Nel sistema vero: account nominativo con ruolo <b>manager</b> nel JWT.
-      Ogni modifica resta tracciata con chi e quando.</div></div>`;
+    <div class="why">Ogni gestore ha il suo accesso personale: qui vedi la versione demo con PIN unico.
+      Ogni modifica che fai resta registrata, con nome e orario.</div></div>`;
 
   const tab=(k,l)=>`<button onclick="adminTab='${k}';draw()" style="padding:8px 15px;border-radius:99px;font-weight:700;
       font-size:13px;background:${adminTab===k?'var(--acc)':'var(--panel)'};
@@ -1484,13 +1572,13 @@ function viewOps(tabs){
             ${ordiniSospesi ? 'SOSPESI — nuovi ordini bloccati, ordini in corso completati normalmente'
                             : 'ATTIVI — i clienti possono ordinare dal QR'}</div></div>
           <div style="font-size:11px;font-weight:800;padding:5px 12px;border-radius:99px;letter-spacing:1px;
-            background:${ordiniSospesi?'rgba(255,93,93,.18)':'rgba(61,220,132,.15)'};
-            color:${ordiniSospesi?'var(--bad)':'var(--acc2)'};border:1px solid ${ordiniSospesi?'rgba(255,93,93,.4)':'rgba(61,220,132,.4)'}">
+            background:${ordiniSospesi?'rgba(179,50,36,.18)':'rgba(21,121,74,.15)'};
+            color:${ordiniSospesi?'var(--bad)':'var(--acc2)'};border:1px solid ${ordiniSospesi?'rgba(179,50,36,.4)':'rgba(21,121,74,.4)'}">
             ${ordiniSospesi?'⏸ SOSPESO':'● ONLINE'}</div>
         </div>
         <button onclick="toggleSospesi()" style="width:100%;padding:14px;border-radius:11px;font-weight:800;
           font-size:15px;letter-spacing:.4px;
-          background:${ordiniSospesi?'var(--acc2)':'var(--bad)'};color:${ordiniSospesi?'#04170c':'#fff'}">
+          background:${ordiniSospesi?'var(--acc2)':'#ff6f61'};color:${ordiniSospesi?'#04170c':'#3a0f08'}">
           ${ordiniSospesi ? '▶ RIATTIVA ORDINI DA APP' : '⏸ SOSPENDI ORDINI DA APP'}
         </button>
         <div style="font-size:11.5px;color:var(--dim);margin-top:12px;line-height:1.5">
@@ -1566,7 +1654,7 @@ function renderTicketCard(t){
     <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px">
       <div style="font-weight:800;font-size:14px">
         🎫 Ticket #${t.id} · ordine #${t.orderId}
-        ${open ? '<span style="background:var(--bad);color:#fff;padding:2px 8px;border-radius:99px;font-size:10px;margin-left:6px;letter-spacing:.5px">APERTO</span>'
+        ${open ? '<span style="background:#ff6f61;color:#3a0f08;padding:2px 8px;border-radius:99px;font-size:10px;margin-left:6px;letter-spacing:.5px">APERTO</span>'
                : '<span style="background:var(--acc2);color:#04170c;padding:2px 8px;border-radius:99px;font-size:10px;margin-left:6px;letter-spacing:.5px">RISOLTO</span>'}
       </div>
       <div style="font-size:11px;color:var(--dim)">${oraDi(t.at)}</div>
@@ -1574,11 +1662,11 @@ function renderTicketCard(t){
     <div style="font-size:12.5px;color:var(--dim);margin-bottom:8px">
       da <b style="color:var(--txt)">${t.cliente}</b> · ${t.email}
     </div>
-    <div style="background:rgba(255,255,255,.04);border-left:3px solid ${open?'var(--bad)':'var(--acc2)'};
+    <div style="background:rgba(33,60,79,.05);border-left:3px solid ${open?'var(--bad)':'var(--acc2)'};
       padding:10px 12px;border-radius:6px;font-size:13.5px;line-height:1.45;margin-bottom:${open?'12':'8'}px">
       "${t.testo}"
     </div>
-    ${t.risposta ? `<div style="background:rgba(61,220,132,.08);border-left:3px solid var(--acc2);
+    ${t.risposta ? `<div style="background:rgba(21,121,74,.08);border-left:3px solid var(--acc2);
       padding:10px 12px;border-radius:6px;font-size:12.5px;line-height:1.45;margin-bottom:8px">
       <b style="color:var(--acc2);font-size:11px;letter-spacing:.5px">RISPOSTA GESTORE:</b><br>${t.risposta}</div>` : ''}
     ${open ? `<div style="display:flex;gap:8px">
@@ -1734,8 +1822,8 @@ function viewLog(tabs){
   LOG.forEach(l=>{
     const [ic,col]=TIPO[l.tipo]||['•','var(--dim)'];
     h+=`<div style="display:flex;gap:12px;padding:11px 13px;border-radius:10px;margin-bottom:6px;
-      background:${l.critico?'#3d3312':'var(--panel)'};
-      border:1px solid ${l.critico?'#6b5a1e':'var(--line)'};align-items:flex-start">
+      background:${l.critico?'#ffe9b8':'var(--panel)'};
+      border:1px solid ${l.critico?'#e0c078':'var(--line)'};align-items:flex-start">
       <div style="font-size:16px;line-height:1.2">${ic}</div>
       <div style="flex:1;min-width:0">
         <div style="font-size:13.5px;line-height:1.4">${l.testo}</div>
@@ -1784,10 +1872,7 @@ function viewTV(){
   return `<div class="check"></div><div class="tv">
     <div class="tvhd">
       <div style="display:flex;align-items:center;gap:14px">
-        <div class="dot" style="width:44px;height:44px;border-radius:50%;background:var(--acc);
-          display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;
-          color:var(--navy);transform:skewY(-8deg);letter-spacing:-.3px;flex-direction:column;line-height:1">
-          <span>THE</span><span style="font-size:10px">BENCH</span></div>
+        <img class="dot" src="assets/logo-the-bench.png" alt="The Bench" style="width:44px;height:44px">
         <div class="tvbrand"><b>Zona ritiro</b><span>guarda il tuo numero</span></div>
       </div>
       <div class="clk">${clk}</div>
