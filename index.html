@@ -1518,6 +1518,7 @@ function viewAdmin(){
   const tabs=`<div style="display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap">
     ${tab('menu','Menu e tariffe')}
     ${tab('report','📊 Report serata')}
+    ${tab('crm','📢 CRM & Marketing')}
     ${tab('tickets',ticketLabel)}
     ${tab('log','Log serata ('+LOG.length+')')}
     ${tab('ops','Operazioni')}
@@ -1527,6 +1528,7 @@ function viewAdmin(){
   if(adminTab==='ops') return viewOps(tabs);
   if(adminTab==='report') return viewReport(tabs);
   if(adminTab==='tickets') return viewTickets(tabs);
+  if(adminTab==='crm') return viewCrm(tabs);
 
   let h=`<div class="kds"><div class="kdshead"><h2>⚙️ Menu e tariffe</h2>
     <div class="stat"><div><b>${ITEMS.filter(i=>!i.out).length}</b>attivi</div>
@@ -1677,6 +1679,168 @@ function renderTicketCard(t){
 }
 
 /* ------ REPORT GIORNALIERO ------ */
+/* ------ CRM & MARKETING (piattaforma email + integrazione Mailchimp/GHL) ------ */
+function viewCrm(tabs){
+  // Mock realistici per bar sport dopo ~3 mesi di attività
+  const tot = 1247;              // Email uniche raccolte
+  const consenso = 892;          // Opt-in marketing (~71%)
+  const attivi30gg = 342;        // Clienti unici ultimi 30 giorni
+  const arischio = 187;          // Non tornano da > 30 giorni
+  const compleanni = 14;         // Compleanni questo mese
+  const spesaMedia = 1180;       // cent = 11,80€
+
+  const recent = [
+    {nome:'Marco R.',     email:'marco.r@gmail.com',       when:'oggi · 19:47', consent:true,  provider:'guest',  visite:3},
+    {nome:'Sara T.',      email:'sara.t@libero.it',        when:'oggi · 20:03', consent:true,  provider:'guest',  visite:1},
+    {nome:'Luigi P.',     email:'luigi.p@icloud.com',      when:'oggi · 20:15', consent:false, provider:'apple',  visite:5},
+    {nome:'Anna B.',      email:'anna.b@icloud.com',       when:'ieri · 22:41', consent:true,  provider:'google', visite:2},
+    {nome:'Giovanni C.',  email:'giovanni.c@outlook.it',   when:'ieri · 21:12', consent:true,  provider:'guest',  visite:8},
+    {nome:'Elena M.',     email:'elena.m@gmail.com',       when:'ieri · 20:36', consent:true,  provider:'google', visite:1},
+  ];
+
+  const segments = [
+    {ic:'🔥', nome:'Top spender (top 10%)',      desc:'Scontrino medio > 20€, min 3 visite', num:96,  color:'var(--acc)'},
+    {ic:'💤', nome:'A rischio',                  desc:'Non tornano da 30+ giorni',            num:187, color:'var(--bad)'},
+    {ic:'🎂', nome:'Compleanni del mese',        desc:'Data di nascita nei prossimi 30gg',   num:14,  color:'var(--viola)'},
+    {ic:'🍕', nome:'Amanti della pizza',         desc:'Almeno 3 ordini con categoria Pizze', num:213, color:'var(--acc2)'},
+    {ic:'🍺', nome:'Amanti delle birre alla spina', desc:'Top 20% consumatori birra spina',  num:154, color:'var(--blue)'},
+    {ic:'📅', nome:'Solo weekend',               desc:'Frequenta esclusivamente ven/sab',    num:78,  color:'var(--dim)'},
+  ];
+
+  return `<div class="kds"><div class="kdshead"><h2>📢 CRM & Marketing</h2>
+    <div class="stat">
+      <div><b>${tot}</b>email raccolte</div>
+      <div><b>${consenso}</b>opt-in marketing</div>
+      <div><b>${Math.round(consenso/tot*100)}%</b>tasso opt-in</div>
+    </div></div>${tabs}
+
+    <div class="rep-grid">
+      <div class="kpi g"><div class="kl">Iscritti CRM</div>
+        <div class="kv">${tot}</div>
+        <div class="ks">↑ 87 questo mese</div></div>
+      <div class="kpi"><div class="kl">Attivi ultimi 30gg</div>
+        <div class="kv">${attivi30gg}</div>
+        <div class="ks">27% del totale</div></div>
+      <div class="kpi v"><div class="kl">Da riattivare</div>
+        <div class="kv">${arischio}</div>
+        <div class="ks">non tornano da 30+ gg</div></div>
+      <div class="kpi b"><div class="kl">Spesa media/cliente</div>
+        <div class="kv">${eur(spesaMedia)}</div>
+        <div class="ks">↑ 0,90€ vs mese scorso</div></div>
+    </div>
+
+    <div class="rep-card">
+      <h4>🔗 Sincronizzazione con piattaforme di email marketing</h4>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-bottom:8px">
+        <div style="background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:14px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <b style="font-size:14px">📧 Mailchimp</b>
+            <span style="color:var(--acc2);font-size:11.5px;font-weight:700">● SINCRONIZZATO</span>
+          </div>
+          <div style="font-size:12px;color:var(--dim);margin-bottom:10px">
+            Lista "The Bench Clienti" · <b style="color:var(--txt)">${consenso}</b> iscritti · ultima sync 3h fa
+          </div>
+          <button class="cta ghost" style="width:100%;padding:8px">🔄 Sincronizza ora</button>
+        </div>
+
+        <div style="background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:14px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <b style="font-size:14px">🚀 GoHighLevel (GHL)</b>
+            <span style="color:var(--acc2);font-size:11.5px;font-weight:700">● SINCRONIZZATO</span>
+          </div>
+          <div style="font-size:12px;color:var(--dim);margin-bottom:10px">
+            Pipeline "Clienti Bar" · segmenti auto · SMS + email · ultima sync 3h fa
+          </div>
+          <button class="cta ghost" style="width:100%;padding:8px">🔄 Sincronizza ora</button>
+        </div>
+      </div>
+      <div class="rep-note">
+        Gli iscritti con consenso vengono spinti automaticamente ai tuoi tool di marketing.
+        Ogni segmento sotto è disponibile come <b>lista dinamica</b> — Mailchimp e GHL la ricevono in tempo reale.
+      </div>
+    </div>
+
+    <div class="rep-card">
+      <h4>🎯 Segmenti automatici <small>filtri pronti da usare in campagne</small></h4>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:10px">
+        ${segments.map(s=>`
+          <div style="background:var(--panel2);border:1px solid var(--line);border-left:4px solid ${s.color};
+            border-radius:10px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;gap:12px">
+            <div style="flex:1;min-width:0">
+              <div style="display:flex;align-items:center;gap:8px;font-weight:700;font-size:13.5px">
+                <span style="font-size:18px">${s.ic}</span>${s.nome}
+              </div>
+              <div style="font-size:11.5px;color:var(--dim);margin-top:2px">${s.desc}</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-size:22px;font-weight:800;color:${s.color};line-height:1">${s.num}</div>
+              <div style="font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.5px">clienti</div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+
+    <div class="rep-card">
+      <h4>💌 Campagne suggerite <small>modelli pronti in un click</small></h4>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px">
+        <div style="background:var(--panel2);border:1px dashed var(--acc);border-radius:10px;padding:12px">
+          <div style="font-weight:700;font-size:13px;color:var(--acc)">💤 → Ti mancano?</div>
+          <div style="font-size:12px;color:var(--dim);margin:5px 0 9px">
+            A chi non torna da 30gg · coupon 10% + saluto</div>
+          <button class="cta ghost" style="width:100%;padding:7px;font-size:12px">Prepara campagna · 187 dest.</button>
+        </div>
+        <div style="background:var(--panel2);border:1px dashed var(--viola);border-radius:10px;padding:12px">
+          <div style="font-weight:700;font-size:13px;color:var(--viola)">🎂 Buon compleanno</div>
+          <div style="font-size:12px;color:var(--dim);margin:5px 0 9px">
+            Ai compleanni del mese · drink omaggio</div>
+          <button class="cta ghost" style="width:100%;padding:7px;font-size:12px">Prepara campagna · 14 dest.</button>
+        </div>
+        <div style="background:var(--panel2);border:1px dashed var(--acc2);border-radius:10px;padding:12px">
+          <div style="font-weight:700;font-size:13px;color:var(--acc2)">🔥 Anteprima top clienti</div>
+          <div style="font-size:12px;color:var(--dim);margin:5px 0 9px">
+            Al 10% top spender · evento chiuso</div>
+          <button class="cta ghost" style="width:100%;padding:7px;font-size:12px">Prepara campagna · 96 dest.</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="rep-card">
+      <h4>📇 Ultimi iscritti</h4>
+      <div style="max-width:900px">
+        ${recent.map(r=>`
+          <div style="display:grid;grid-template-columns:1fr auto auto auto;gap:12px;align-items:center;
+            padding:9px 0;border-top:1px solid var(--line);font-size:13px">
+            <div><b>${r.nome}</b> <span style="color:var(--dim);font-size:11.5px">· ${r.email}</span></div>
+            <div style="font-size:11px;color:var(--dim)">${r.provider==='google'?'🔵 Google':r.provider==='apple'?'⬛ Apple':'📧 Email'}</div>
+            <div style="font-size:11.5px;color:var(--dim)">${r.visite} visite</div>
+            <div>${r.consent
+              ? '<span style="color:var(--acc2);font-size:11px;font-weight:700">✓ OPT-IN</span>'
+              : '<span style="color:var(--dim);font-size:11px">no marketing</span>'}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+
+    <div class="rep-card" style="border-left:3px solid var(--acc2);background:rgba(61,220,132,.05)">
+      <h4>🔒 Conformità GDPR</h4>
+      <div style="font-size:12.5px;line-height:1.6;color:var(--dim)">
+        ✓ <b style="color:var(--txt)">Consenso separato</b> alla registrazione (checkbox non pre-spuntata)<br>
+        ✓ <b style="color:var(--txt)">Opt-out con un click</b> in ogni email inviata<br>
+        ✓ <b style="color:var(--txt)">Diritto all'oblio</b> tramite portale dedicato al cliente<br>
+        ✓ <b style="color:var(--txt)">Titolare del trattamento</b>: il locale (tu). Piattaforma tecnica = responsabile ex art. 28<br>
+        ✓ <b style="color:var(--txt)">Registro delle attività di trattamento</b> generato automaticamente
+      </div>
+    </div>
+
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px">
+      <button class="cta ghost" style="width:auto;padding:10px 16px">⬇ Esporta lista completa (CSV)</button>
+      <button class="cta ghost" style="width:auto;padding:10px 16px">📊 Report campagne inviate</button>
+      <button class="cta ghost" style="width:auto;padding:10px 16px">⚙️ Configura integrazioni</button>
+    </div>
+  </div>`;
+}
+
 function viewReport(tabs){
   // Mix di dati reali (dagli orders/LOG) e mock realistici per una serata tipo
   const closedOrders = orders.filter(o=>o.stato==='closed');
