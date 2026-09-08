@@ -4,7 +4,7 @@ Prototipo navigabile della piattaforma di ordinazione digitale sviluppata per **
 
 ## 🚀 Provalo
 
-**Demo live**: [https://mattiadevicaris1-lang.github.io/thebench-demo/](https://mattiadevicaris1-lang.github.io/thebench-demo/)
+**Demo live**: [https://thebench-demo.vercel.app](https://thebench-demo.vercel.app)
 
 Apri il link, il tour guidato parte da solo. Puoi esplorare libero cambiando ruolo dalla barra in alto.
 
