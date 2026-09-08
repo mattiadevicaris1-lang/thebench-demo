@@ -1,29 +1,29 @@
-# The Bench — Demo interattiva del sistema ordini
+# The Bench — Demo interattiva
 
-Prototipo navigabile per **The Bench**, bar sport ad Agnano (Napoli). Sistema di ordinazione da QR pensato per eliminare la coda al banco unico nelle serate di punta.
+Prototipo navigabile della piattaforma di ordinazione digitale sviluppata per **The Bench**, esercizio di somministrazione ad Agnano (Napoli).
 
 ## 🚀 Provalo
 
 **Demo live**: [https://mattiadevicaris1-lang.github.io/thebench-demo/](https://mattiadevicaris1-lang.github.io/thebench-demo/)
 
-Apri il link, il tour guidato parte da solo in 7 tappe (~5 minuti). Poi puoi esplorare libero cambiando ruolo dalla barra in alto.
+Apri il link, il tour guidato parte da solo. Puoi esplorare libero cambiando ruolo dalla barra in alto.
 
-## Cosa vedi
+## Vista funzionale
 
-Un'unica webapp che simula tutti i ruoli del sistema:
+Un'unica webapp che simula tutte le postazioni del sistema:
 
 | Ruolo | Cosa fa |
 |---|---|
-| 📱 **Cliente** | Inquadra QR, ordina, riceve il numero, aspetta seduto |
-| 🍹 **KDS Bar** | Vede solo le bibite, con suono all'arrivo di nuovi ordini |
-| 🍕 **KDS Cucina** | Vede solo il cibo, sblocca le bibite quando "manca poco" |
-| 💶 **Cassa / Ritiro** | Distingue chi ha pagato in app da chi paga adesso |
-| 📺 **Display** | Il monitor in sala con numeri ordini pronti |
-| ⚙️ **Gestore** | Backoffice: menu, log serata, report, sospendi ordini (PIN `1234`) |
+| 📱 **Cliente** | Ordina, riceve un numero, aspetta seduto |
+| 🍹 **Postazione Bar** | Vede solo le bibite, notifiche sonore in arrivo |
+| 🍕 **Postazione Cucina** | Vede solo il cibo, coordina i tempi con il bar |
+| 💶 **Cassa / Ritiro** | Distingue chi ha pagato dall'app da chi paga adesso |
+| 📺 **Display** | Il monitor in sala con lo stato degli ordini |
+| ⚙️ **Backoffice** | Menu, log, report, gestione ordini (PIN `1234`) |
 
 ## Riservatezza
 
-Questa demo è materiale **riservato**. La documentazione strategica, architetturale, la roadmap operativa e i dettagli tecnici sono conservati in un repository separato, disponibili **solo su richiesta e previa firma di accordo di riservatezza**.
+Questa demo è materiale **riservato**. Documentazione strategica, architetturale, roadmap operativa e dettagli tecnici sono conservati in un repository separato, disponibili **solo su richiesta e previa firma di accordo di riservatezza**.
 
 Per informazioni: contatta i proprietari del progetto.
 
