@@ -67,38 +67,30 @@ button:disabled{cursor:default}
 .tavolo-n{font-family:'Anton',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
   font-weight:400;color:var(--txt);font-size:15px;letter-spacing:.3px}
 
-/* --- QR LANDING --- */
+/* --- LANDING BENVENUTO (accesso via NFC / tecnologia coperta) --- */
 .qr-page{min-height:calc(100vh - 80px);background:linear-gradient(180deg, #ffe9b0 0%, #fec144 55%, #ffcf5c 100%);
   display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center;
   animation:fadeIn .5s ease}
 .qr-page .logo{margin-bottom:24px;animation:pop .6s cubic-bezier(.34,1.56,.64,1)}
-.qr-page h1{font-size:26px;margin:0 0 6px;letter-spacing:-.5px}
-.qr-page .sub{color:var(--dim);margin-bottom:32px;font-size:14px;max-width:340px}
+.qr-page h1{font-size:32px;margin:0 0 6px;letter-spacing:-.5px}
+.qr-page .sub{color:var(--dim);margin-bottom:24px;font-size:14px;max-width:340px}
 .qr-claim{font-family:'Anton',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-  font-weight:400;text-transform:uppercase;font-size:30px;line-height:1.15;letter-spacing:.3px;
+  font-weight:400;text-transform:uppercase;font-size:28px;line-height:1.15;letter-spacing:.3px;
   color:var(--txt);max-width:360px;margin:4px 0 28px}
-.qr-frame{width:250px;height:250px;background:#fff;border-radius:24px;padding:22px;
-  box-shadow:0 24px 64px rgba(33,60,79,.22), 0 0 0 3px rgba(33,60,79,.12);
-  position:relative;margin-bottom:22px}
-.qr-frame svg{width:100%;height:100%;display:block}
-.qr-scan{position:absolute;left:22px;right:22px;height:3px;background:var(--acc);border-radius:2px;
-  box-shadow:0 0 24px var(--acc),0 0 44px rgba(33,60,79,.45);animation:scan 1.8s ease-in-out infinite}
-.qr-corners{position:absolute;inset:12px;pointer-events:none}
-.qr-corners span{position:absolute;width:22px;height:22px;border:3px solid var(--acc)}
-.qr-corners span:nth-child(1){top:0;left:0;border-right:none;border-bottom:none;border-radius:6px 0 0 0}
-.qr-corners span:nth-child(2){top:0;right:0;border-left:none;border-bottom:none;border-radius:0 6px 0 0}
-.qr-corners span:nth-child(3){bottom:0;left:0;border-right:none;border-top:none;border-radius:0 0 0 6px}
-.qr-corners span:nth-child(4){bottom:0;right:0;border-left:none;border-top:none;border-radius:0 0 6px 0}
-@keyframes scan{0%,100%{top:22px}50%{top:222px}}
+.welcome-badge{background:rgba(33,60,79,.08);border:1.5px solid rgba(33,60,79,.15);border-radius:99px;
+  padding:9px 22px;font-size:13.5px;color:var(--navy);font-weight:700;margin-bottom:26px;letter-spacing:.3px;
+  display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 12px rgba(33,60,79,.08)}
+.welcome-badge .pulse-dot{width:8px;height:8px;border-radius:50%;background:#3ddc84;
+  box-shadow:0 0 0 0 rgba(61,220,132,.6);animation:pulseDot 2s ease-in-out infinite}
+@keyframes pulseDot{0%,100%{box-shadow:0 0 0 0 rgba(61,220,132,.6)}
+  50%{box-shadow:0 0 0 8px rgba(61,220,132,0)}}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @keyframes pop{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}
-.qr-instr{color:var(--acc);font-weight:700;font-size:15px;margin-bottom:16px;letter-spacing:.3px}
-.qr-tavolo{background:rgba(33,60,79,.06);border:1px solid var(--line);border-radius:14px;
-  padding:12px 22px;font-size:13px;color:var(--dim);margin-bottom:18px}
-.qr-tavolo b{color:var(--acc);font-size:15px;letter-spacing:1px}
-.qr-open{padding:14px 30px;background:var(--acc);color:var(--navy);
-  border-radius:99px;font-weight:800;font-size:14px;letter-spacing:.4px;
-  box-shadow:0 10px 24px rgba(254,193,68,.35);animation:pulse 2s ease-in-out infinite}
+.qr-open{padding:16px 40px;background:var(--acc);color:var(--navy);
+  border-radius:99px;font-weight:800;font-size:15px;letter-spacing:.4px;
+  box-shadow:0 10px 24px rgba(254,193,68,.35);animation:pulse 2s ease-in-out infinite;
+  border:none;cursor:pointer;transition:transform .15s}
+.qr-open:hover{transform:scale(1.02)}
 @keyframes pulse{0%,100%{transform:scale(1);box-shadow:0 10px 24px rgba(254,193,68,.35)}
   50%{transform:scale(1.04);box-shadow:0 14px 34px rgba(254,193,68,.55)}}
 .qr-foot{color:var(--dim);font-size:11px;margin-top:22px;letter-spacing:.3px;opacity:.7}
@@ -631,7 +623,7 @@ const app=()=>document.getElementById('app');
 const ROLES=[['cliente','📱 Cliente'],['bar','🍹 KDS Bar'],['cucina','🍕 KDS Cucina'],
              ['cassa','💶 Cassa / Ritiro'],['tv','📺 Display'],['admin','⚙️ Gestore']];
 const HINTS={
- cliente:'Cliente al tavolo 14. Inquadra il QR, ordina cibo + bibite e scegli quando vuoi le bibite.',
+ cliente:'Vista cliente. Al tuo posto ordini cibo + bibite e scegli quando vuoi le bibite.',
  bar:'Vista barista al tablet del bar. Le bibite "abbinate" restano in attesa finché la cucina non le sblocca.',
  cucina:'Vista cucina al tablet della cucina. Quando manchi ~3 minuti, premi "Manca poco" e le bibite partono al bar.',
  cassa:'Cassa: si incassa una volta sola, al primo ritiro. Chi ha pagato in app viene solo consegnato.',
@@ -687,9 +679,9 @@ function draw(){
 
 /* ================= TOUR GUIDATO ================= */
 const TOUR = [
-  {role:'cliente', view:'qr', title:'📱 Il cliente al tavolo 14',
-   text:'Marco è a The Bench per la partita. Al banco c\'è coda di 40 minuti. Inquadra il QR sul suo tavolo col telefono — nessuna app da scaricare.',
-   tip:'<b>Nessun attrito.</b> Basta la fotocamera, nemmeno serve digitare l\'URL.'},
+  {role:'cliente', view:'qr', title:'📱 Il cliente si collega',
+   text:'Marco è a The Bench per la partita. Al banco c\'è coda di 40 minuti. Dal suo posto, in un tap, si collega alla piattaforma — nessuna app da scaricare.',
+   tip:'<b>Nessun attrito.</b> Dal punto in cui è seduto entra direttamente nell\'ordinazione.'},
   {role:'cliente', view:'login', title:'🚀 Accesso in 10 secondi',
    text:'Nome, email, telefono. Nessuna password. L\'ordine parte subito. Alla prossima visita l\'app lo riconosce e lo saluta per nome.',
    tip:'<b>Il vantaggio invisibile:</b> il locale costruisce una lista clienti reale (email + cellulare) che oggi non esiste.'},
@@ -816,24 +808,18 @@ function verifyOtp(){
 function qrLanding(){
   return `<div class="qr-page">
     <img class="logo" src="assets/logo-the-bench.png" alt="The Bench">
-    <div class="qr-claim">INQUADRA IL CODICE QR<br>SUL TAVOLO PER ORDINARE</div>
-    <div class="qr-frame">
-      <div class="qr-corners"><span></span><span></span><span></span><span></span></div>
-      <div class="qr-scan"></div>
-      ${qrSvg()}
-    </div>
-    <div class="qr-instr">📷 Basta la fotocamera del telefono, nessuna app da scaricare</div>
-    <button class="qr-open" onclick="view='login';draw()">SIMULA SCANSIONE QR →</button>
+    <div class="welcome-badge"><span class="pulse-dot"></span> Sei al The Bench</div>
+    <h1>Benvenuto!</h1>
+    <div class="qr-claim">SEI COLLEGATO<br>ORDINA IN UN TAP</div>
+    <button class="qr-open" onclick="view='login';draw()">INIZIA A ORDINARE →</button>
     <button onclick="view='otp';draw()" style="margin-top:12px;color:var(--dim);
       background:transparent;border:1px solid var(--line);padding:10px 20px;border-radius:99px;font-size:12.5px">
       🔄 Sei già stato qui? Simula 2° accesso →
     </button>
-    <div class="qr-foot">Nella realtà: apri la fotocamera, inquadri, tocchi la notifica che appare.</div>
+    <div class="qr-foot">Nessuna app da scaricare — funziona subito nel tuo browser.</div>
   </div>`;
 }
-function qrSvg() {
-  return `<svg viewBox="0 0 290 290" xmlns="http://www.w3.org/2000/svg"><rect width="100%" height="100%" fill="#fff"/><g fill="#152441"><rect x="0" y="0" width="70" height="10"/><rect x="90" y="0" width="10" height="10"/><rect x="110" y="0" width="10" height="10"/><rect x="130" y="0" width="10" height="10"/><rect x="160" y="0" width="10" height="10"/><rect x="180" y="0" width="20" height="10"/><rect x="220" y="0" width="70" height="10"/><rect x="0" y="10" width="10" height="10"/><rect x="60" y="10" width="10" height="10"/><rect x="80" y="10" width="10" height="10"/><rect x="110" y="10" width="20" height="10"/><rect x="140" y="10" width="40" height="10"/><rect x="190" y="10" width="10" height="10"/><rect x="220" y="10" width="10" height="10"/><rect x="280" y="10" width="10" height="10"/><rect x="0" y="20" width="10" height="10"/><rect x="20" y="20" width="30" height="10"/><rect x="60" y="20" width="10" height="10"/><rect x="90" y="20" width="20" height="10"/><rect x="130" y="20" width="20" height="10"/><rect x="160" y="20" width="10" height="10"/><rect x="190" y="20" width="10" height="10"/><rect x="220" y="20" width="10" height="10"/><rect x="240" y="20" width="30" height="10"/><rect x="280" y="20" width="10" height="10"/><rect x="0" y="30" width="10" height="10"/><rect x="20" y="30" width="30" height="10"/><rect x="60" y="30" width="10" height="10"/><rect x="90" y="30" width="10" height="10"/><rect x="110" y="30" width="50" height="10"/><rect x="180" y="30" width="10" height="10"/><rect x="220" y="30" width="10" height="10"/><rect x="240" y="30" width="30" height="10"/><rect x="280" y="30" width="10" height="10"/><rect x="0" y="40" width="10" height="10"/><rect x="20" y="40" width="30" height="10"/><rect x="60" y="40" width="10" height="10"/><rect x="80" y="40" width="10" height="10"/><rect x="100" y="40" width="30" height="10"/><rect x="140" y="40" width="10" height="10"/><rect x="190" y="40" width="20" height="10"/><rect x="220" y="40" width="10" height="10"/><rect x="240" y="40" width="30" height="10"/><rect x="280" y="40" width="10" height="10"/><rect x="0" y="50" width="10" height="10"/><rect x="60" y="50" width="10" height="10"/><rect x="130" y="50" width="10" height="10"/><rect x="170" y="50" width="10" height="10"/><rect x="190" y="50" width="20" height="10"/><rect x="220" y="50" width="10" height="10"/><rect x="280" y="50" width="10" height="10"/><rect x="0" y="60" width="70" height="10"/><rect x="80" y="60" width="10" height="10"/><rect x="100" y="60" width="10" height="10"/><rect x="120" y="60" width="10" height="10"/><rect x="140" y="60" width="10" height="10"/><rect x="160" y="60" width="10" height="10"/><rect x="180" y="60" width="10" height="10"/><rect x="200" y="60" width="10" height="10"/><rect x="220" y="60" width="70" height="10"/><rect x="110" y="70" width="10" height="10"/><rect x="130" y="70" width="20" height="10"/><rect x="160" y="70" width="20" height="10"/><rect x="200" y="70" width="10" height="10"/><rect x="0" y="80" width="10" height="10"/><rect x="20" y="80" width="10" height="10"/><rect x="40" y="80" width="10" height="10"/><rect x="60" y="80" width="10" height="10"/><rect x="90" y="80" width="20" height="10"/><rect x="120" y="80" width="10" height="10"/><rect x="140" y="80" width="20" height="10"/><rect x="170" y="80" width="10" height="10"/><rect x="190" y="80" width="20" height="10"/><rect x="240" y="80" width="10" height="10"/><rect x="270" y="80" width="10" height="10"/><rect x="10" y="90" width="10" height="10"/><rect x="30" y="90" width="10" height="10"/><rect x="50" y="90" width="10" height="10"/><rect x="70" y="90" width="10" height="10"/><rect x="90" y="90" width="20" height="10"/><rect x="140" y="90" width="20" height="10"/><rect x="170" y="90" width="20" height="10"/><rect x="200" y="90" width="30" height="10"/><rect x="250" y="90" width="10" height="10"/><rect x="280" y="90" width="10" height="10"/><rect x="0" y="100" width="30" height="10"/><rect x="50" y="100" width="20" height="10"/><rect x="110" y="100" width="10" height="10"/><rect x="130" y="100" width="10" height="10"/><rect x="180" y="100" width="10" height="10"/><rect x="210" y="100" width="20" height="10"/><rect x="260" y="100" width="30" height="10"/><rect x="0" y="110" width="10" height="10"/><rect x="40" y="110" width="10" height="10"/><rect x="70" y="110" width="10" height="10"/><rect x="90" y="110" width="40" height="10"/><rect x="150" y="110" width="10" height="10"/><rect x="170" y="110" width="10" height="10"/><rect x="190" y="110" width="20" height="10"/><rect x="230" y="110" width="10" height="10"/><rect x="270" y="110" width="10" height="10"/><rect x="0" y="120" width="10" height="10"/><rect x="20" y="120" width="20" height="10"/><rect x="60" y="120" width="10" height="10"/><rect x="80" y="120" width="10" height="10"/><rect x="110" y="120" width="10" height="10"/><rect x="160" y="120" width="70" height="10"/><rect x="250" y="120" width="10" height="10"/><rect x="270" y="120" width="20" height="10"/><rect x="20" y="130" width="40" height="10"/><rect x="70" y="130" width="40" height="10"/><rect x="120" y="130" width="20" height="10"/><rect x="150" y="130" width="20" height="10"/><rect x="200" y="130" width="30" height="10"/><rect x="250" y="130" width="10" height="10"/><rect x="280" y="130" width="10" height="10"/><rect x="0" y="140" width="10" height="10"/><rect x="30" y="140" width="10" height="10"/><rect x="50" y="140" width="20" height="10"/><rect x="90" y="140" width="40" height="10"/><rect x="140" y="140" width="40" height="10"/><rect x="210" y="140" width="10" height="10"/><rect x="230" y="140" width="30" height="10"/><rect x="270" y="140" width="20" height="10"/><rect x="0" y="150" width="30" height="10"/><rect x="40" y="150" width="10" height="10"/><rect x="100" y="150" width="10" height="10"/><rect x="120" y="150" width="30" height="10"/><rect x="160" y="150" width="70" height="10"/><rect x="250" y="150" width="10" height="10"/><rect x="270" y="150" width="10" height="10"/><rect x="0" y="160" width="10" height="10"/><rect x="40" y="160" width="10" height="10"/><rect x="60" y="160" width="10" height="10"/><rect x="100" y="160" width="20" height="10"/><rect x="140" y="160" width="20" height="10"/><rect x="170" y="160" width="10" height="10"/><rect x="200" y="160" width="30" height="10"/><rect x="250" y="160" width="10" height="10"/><rect x="270" y="160" width="20" height="10"/><rect x="10" y="170" width="10" height="10"/><rect x="30" y="170" width="10" height="10"/><rect x="70" y="170" width="20" height="10"/><rect x="110" y="170" width="20" height="10"/><rect x="140" y="170" width="20" height="10"/><rect x="170" y="170" width="20" height="10"/><rect x="200" y="170" width="30" height="10"/><rect x="250" y="170" width="20" height="10"/><rect x="280" y="170" width="10" height="10"/><rect x="0" y="180" width="10" height="10"/><rect x="50" y="180" width="20" height="10"/><rect x="90" y="180" width="10" height="10"/><rect x="110" y="180" width="10" height="10"/><rect x="130" y="180" width="10" height="10"/><rect x="200" y="180" width="10" height="10"/><rect x="220" y="180" width="10" height="10"/><rect x="240" y="180" width="10" height="10"/><rect x="270" y="180" width="20" height="10"/><rect x="10" y="190" width="10" height="10"/><rect x="40" y="190" width="10" height="10"/><rect x="110" y="190" width="20" height="10"/><rect x="150" y="190" width="10" height="10"/><rect x="170" y="190" width="10" height="10"/><rect x="190" y="190" width="20" height="10"/><rect x="220" y="190" width="40" height="10"/><rect x="270" y="190" width="10" height="10"/><rect x="0" y="200" width="10" height="10"/><rect x="20" y="200" width="20" height="10"/><rect x="60" y="200" width="20" height="10"/><rect x="90" y="200" width="10" height="10"/><rect x="110" y="200" width="20" height="10"/><rect x="160" y="200" width="30" height="10"/><rect x="200" y="200" width="50" height="10"/><rect x="80" y="210" width="20" height="10"/><rect x="130" y="210" width="10" height="10"/><rect x="150" y="210" width="20" height="10"/><rect x="190" y="210" width="20" height="10"/><rect x="240" y="210" width="10" height="10"/><rect x="260" y="210" width="30" height="10"/><rect x="0" y="220" width="70" height="10"/><rect x="90" y="220" width="20" height="10"/><rect x="120" y="220" width="10" height="10"/><rect x="140" y="220" width="40" height="10"/><rect x="190" y="220" width="20" height="10"/><rect x="220" y="220" width="10" height="10"/><rect x="240" y="220" width="20" height="10"/><rect x="270" y="220" width="20" height="10"/><rect x="0" y="230" width="10" height="10"/><rect x="60" y="230" width="10" height="10"/><rect x="100" y="230" width="50" height="10"/><rect x="160" y="230" width="30" height="10"/><rect x="200" y="230" width="10" height="10"/><rect x="240" y="230" width="20" height="10"/><rect x="270" y="230" width="20" height="10"/><rect x="0" y="240" width="10" height="10"/><rect x="20" y="240" width="30" height="10"/><rect x="60" y="240" width="10" height="10"/><rect x="80" y="240" width="30" height="10"/><rect x="120" y="240" width="10" height="10"/><rect x="140" y="240" width="50" height="10"/><rect x="200" y="240" width="50" height="10"/><rect x="270" y="240" width="10" height="10"/><rect x="0" y="250" width="10" height="10"/><rect x="20" y="250" width="30" height="10"/><rect x="60" y="250" width="10" height="10"/><rect x="90" y="250" width="10" height="10"/><rect x="110" y="250" width="50" height="10"/><rect x="170" y="250" width="20" height="10"/><rect x="230" y="250" width="20" height="10"/><rect x="260" y="250" width="10" height="10"/><rect x="0" y="260" width="10" height="10"/><rect x="20" y="260" width="30" height="10"/><rect x="60" y="260" width="10" height="10"/><rect x="80" y="260" width="20" height="10"/><rect x="110" y="260" width="10" height="10"/><rect x="160" y="260" width="10" height="10"/><rect x="180" y="260" width="20" height="10"/><rect x="230" y="260" width="30" height="10"/><rect x="280" y="260" width="10" height="10"/><rect x="0" y="270" width="10" height="10"/><rect x="60" y="270" width="10" height="10"/><rect x="90" y="270" width="20" height="10"/><rect x="150" y="270" width="90" height="10"/><rect x="270" y="270" width="10" height="10"/><rect x="0" y="280" width="70" height="10"/><rect x="80" y="280" width="30" height="10"/><rect x="120" y="280" width="10" height="10"/><rect x="170" y="280" width="20" height="10"/><rect x="200" y="280" width="10" height="10"/><rect x="220" y="280" width="40" height="10"/><rect x="270" y="280" width="20" height="10"/></g></svg>`;
-}
+/* nota interna: landing pagina di benvenuto — accesso tramite tecnologia coperta */
 
 function login(){
   return `<div class="check"></div><div class="login">
@@ -1572,7 +1558,7 @@ function viewOps(tabs){
           <div><div style="font-size:15px;font-weight:800">Ordini via app</div>
           <div style="font-size:12.5px;color:var(--dim);margin-top:3px">
             ${ordiniSospesi ? 'SOSPESI — nuovi ordini bloccati, ordini in corso completati normalmente'
-                            : 'ATTIVI — i clienti possono ordinare dal QR'}</div></div>
+                            : 'ATTIVI — i clienti possono ordinare dall\'app'}</div></div>
           <div style="font-size:11px;font-weight:800;padding:5px 12px;border-radius:99px;letter-spacing:1px;
             background:${ordiniSospesi?'rgba(179,50,36,.18)':'rgba(21,121,74,.15)'};
             color:${ordiniSospesi?'var(--bad)':'var(--acc2)'};border:1px solid ${ordiniSospesi?'rgba(179,50,36,.4)':'rgba(21,121,74,.4)'}">
@@ -1584,7 +1570,7 @@ function viewOps(tabs){
           ${ordiniSospesi ? '▶ RIATTIVA ORDINI DA APP' : '⏸ SOSPENDI ORDINI DA APP'}
         </button>
         <div style="font-size:11.5px;color:var(--dim);margin-top:12px;line-height:1.5">
-          Quando sospendi: chi apre il QR vede il messaggio <i>"Ordini via app momentaneamente sospesi,
+          Quando sospendi: chi apre l'app vede il messaggio <i>"Ordini via app momentaneamente sospesi,
           ordina al banco"</i>. Gli ordini già in corso continuano normalmente. Un tap per tornare online.
         </div>
       </div>
