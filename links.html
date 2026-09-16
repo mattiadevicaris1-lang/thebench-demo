@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#fec144">
+<title>The Bench Sport Bar — Link</title>
+<meta name="description" content="Menù, social e recensioni di The Bench Sport Bar — Agnano, Napoli.">
+<link rel="icon" href="assets/logo-the-bench.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#fec144; --panel:#ffd876; --panel2:#ffe7ad;
+  --line:rgba(33,60,79,.25); --txt:#213c4f; --dim:rgba(33,60,79,.65);
+  --acc:#213c4f; --r:16px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  background:linear-gradient(180deg,#ffe9b0 0%,#fec144 55%,#ffcf5c 100%);
+  background-attachment:fixed;min-height:100vh;color:var(--txt);
+  font:15px/1.45 'Montserrat',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+}
+h1,h2,.btn-main,.soc-lbl{font-family:'Anton',-apple-system,"Segoe UI",Roboto,sans-serif;
+  font-weight:400;letter-spacing:.5px;text-transform:uppercase}
+button,a{font-size:inherit;line-height:inherit;cursor:pointer;border:none;background:none;
+  color:inherit;text-decoration:none;font-family:inherit}
+
+/* --- pattern scacchi brand --- */
+.check{height:12px;background:repeating-conic-gradient(var(--acc) 0% 25%, var(--bg) 0% 50%) 0/24px 24px;
+  border-top:2px solid var(--acc);border-bottom:2px solid var(--acc)}
+
+/* ---------- SPLASHSCREEN ---------- */
+#splash{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;padding:40px 24px;text-align:center;
+  background:linear-gradient(180deg,#ffe9b0 0%,#fec144 60%,#ffcf5c 100%);overflow:hidden;
+  transition:opacity .7s ease,visibility .7s ease}
+#splash.hide{opacity:0;visibility:hidden;pointer-events:none}
+
+#splashVid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  opacity:0;transition:opacity .7s ease;z-index:0}
+#splashVid.on{opacity:1}
+#splash.out #splashVid{opacity:0}
+#splash.novid #splashVid{display:none}
+#splash .check{position:absolute;left:0;right:0;z-index:3;transition:opacity .4s ease}
+/* le bande sono gia' dentro al video: niente doppione */
+#splash.on-video:not(.out) .check{opacity:0}
+#splash .check.top{top:0}
+#splash .check.bot{bottom:0}
+.splash-inner{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center}
+
+#splash img.mark{width:170px;max-width:56vw;height:auto;margin-bottom:24px;
+  filter:drop-shadow(0 14px 34px rgba(33,60,79,.45)) drop-shadow(0 0 18px rgba(255,233,176,.9));
+  animation:markIn 1.1s cubic-bezier(.22,1,.36,1) both, float 4.5s 1.1s ease-in-out infinite}
+#splash .welcome{font-size:13px;font-weight:800;letter-spacing:2.6px;text-transform:uppercase;
+  color:var(--dim);margin-bottom:8px;text-shadow:0 1px 10px rgba(255,233,176,.95);
+  animation:fadeUp .7s .35s ease both}
+#splash h1{font-size:clamp(28px,8.5vw,40px);line-height:1.08;margin:0;max-width:340px;
+  color:var(--txt);text-shadow:0 2px 14px rgba(255,233,176,.9),0 1px 3px rgba(255,233,176,.95);
+  animation:fadeUp .7s .5s ease both}
+#splash .tap{margin-top:30px;font-size:11px;letter-spacing:1.6px;text-transform:uppercase;
+  font-weight:700;color:var(--dim);
+  animation:fadeUp .6s 1.4s ease both,blink 2.2s 2s ease-in-out infinite}
+
+@keyframes markIn{0%{transform:scale(.7) translateY(14px);opacity:0;filter:blur(6px)}
+  100%{transform:scale(1) translateY(0);opacity:1;filter:blur(0)}}
+@keyframes float{0%,100%{transform:translateY(0) rotate(-.6deg) scale(1)}
+  50%{transform:translateY(-11px) rotate(.6deg) scale(1.025)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes blink{0%,100%{opacity:.7}50%{opacity:.28}}
+
+/* ---------- PAGINA LINK ---------- */
+/* strisce a scacchi come nella demo */
+.strip{position:fixed;left:0;right:0;z-index:20;opacity:0;transition:opacity .6s .25s ease}
+.strip.top{top:0}
+.strip.bot{bottom:0}
+.page.in~.strip,body.entered .strip{opacity:1}
+
+.page{max-width:440px;margin:0 auto;padding:46px 20px 60px;
+  opacity:0;transition:opacity .5s ease}
+.page.in{opacity:1}
+/* i tasti compaiono uno dopo l'altro */
+.page>*{opacity:0;transform:translateY(16px)}
+.page.in>*{animation:riseIn .55s cubic-bezier(.22,1,.36,1) both}
+.page.in>*:nth-child(1){animation-delay:.10s}
+.page.in>*:nth-child(2){animation-delay:.24s}
+.page.in>*:nth-child(3){animation-delay:.34s}
+.page.in>*:nth-child(4){animation-delay:.44s}
+.page.in>*:nth-child(5){animation-delay:.56s}
+@keyframes riseIn{to{opacity:1;transform:none}}
+.hero{text-align:center;margin-bottom:30px}
+.hero img{width:96px;height:auto;margin:0 auto 16px;display:block;
+  filter:drop-shadow(0 8px 24px rgba(33,60,79,.28))}
+.hero h1{font-size:clamp(23px,6.2vw,29px);line-height:1.1;margin:0 0 10px}
+.hero .loc{display:inline-flex;align-items:center;gap:7px;background:rgba(33,60,79,.08);
+  border:1.5px solid rgba(33,60,79,.15);border-radius:99px;padding:7px 16px;
+  font-size:12.5px;font-weight:700;color:var(--txt);letter-spacing:.3px}
+.hero .loc .dot{width:7px;height:7px;border-radius:50%;background:#3ddc84;
+  box-shadow:0 0 0 0 rgba(61,220,132,.6);animation:pulseDot 2s ease-in-out infinite}
+@keyframes pulseDot{0%,100%{box-shadow:0 0 0 0 rgba(61,220,132,.6)}
+  50%{box-shadow:0 0 0 8px rgba(61,220,132,0)}}
+
+.btn-main{display:flex;align-items:center;justify-content:center;gap:11px;width:100%;
+  padding:19px 20px;border-radius:var(--r);font-size:17px;margin-bottom:12px;
+  background:var(--acc);color:var(--bg);border:2px solid var(--acc);
+  box-shadow:0 8px 22px rgba(33,60,79,.22);transition:transform .15s,box-shadow .15s}
+.btn-main:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(33,60,79,.3)}
+.btn-main:active{transform:translateY(0)}
+.btn-main.ghost{background:var(--panel2);color:var(--acc);box-shadow:0 6px 18px rgba(33,60,79,.12)}
+.btn-main.ghost:hover{box-shadow:0 10px 24px rgba(33,60,79,.2)}
+.btn-main svg{flex-shrink:0}
+
+/* collapsable "Seguici" */
+.coll{margin-bottom:12px}
+.coll-head{display:flex;align-items:center;justify-content:center;gap:11px;width:100%;
+  padding:19px 20px;border-radius:var(--r);font-size:17px;
+  background:var(--panel);color:var(--acc);border:2px solid var(--acc);
+  font-family:'Anton',sans-serif;font-weight:400;letter-spacing:.5px;text-transform:uppercase;
+  transition:transform .15s,border-radius .25s}
+.coll-head:hover{transform:translateY(-2px)}
+.coll.open .coll-head{border-bottom-left-radius:0;border-bottom-right-radius:0;border-bottom-width:0}
+.coll-head .chev{transition:transform .3s cubic-bezier(.4,0,.2,1);margin-left:2px}
+.coll.open .coll-head .chev{transform:rotate(180deg)}
+.coll-body{max-height:0;overflow:hidden;transition:max-height .35s cubic-bezier(.4,0,.2,1)}
+.coll.open .coll-body{max-height:200px}
+.socials{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;
+  padding:14px;background:var(--panel);border:2px solid var(--acc);border-top:none;
+  border-radius:0 0 var(--r) var(--r)}
+.soc{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;
+  padding:15px 6px;border-radius:12px;color:#fff;
+  transition:transform .15s,filter .15s;box-shadow:0 4px 12px rgba(33,60,79,.18)}
+.soc:hover{transform:translateY(-2px);filter:brightness(1.1)}
+.soc svg{width:25px;height:25px}
+.soc-lbl{font-size:11.5px;letter-spacing:.8px}
+.soc.ig{background:linear-gradient(45deg,#f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%)}
+.soc.tt{background:#010101}
+.soc.tt svg .tt-c{fill:#25f4ee}.soc.tt svg .tt-m{fill:#fe2c55}
+.soc.fb{background:#1877f2}
+
+/* pulsanti recensione */
+.rev{display:flex;align-items:center;justify-content:center;gap:10px;padding:15px 12px;
+  border-radius:12px;font-weight:800;font-size:14px;color:#fff;
+  transition:transform .15s,filter .15s;box-shadow:0 4px 12px rgba(33,60,79,.18)}
+.rev:hover{transform:translateY(-2px);filter:brightness(1.08)}
+.rev+.rev{margin-top:9px}
+.rev.google{background:#fff;color:#3c4043;border:1px solid #dadce0}
+.rev.trip{background:#000;color:#fff}
+.rev .stars{color:#fbbc04;letter-spacing:1px;font-size:13px}
+.rev-wrap{padding:14px;background:var(--panel);border:2px solid var(--acc);border-top:none;
+  border-radius:0 0 var(--r) var(--r)}
+
+.foot{text-align:center;margin-top:30px;font-size:11px;color:var(--dim);
+  letter-spacing:.4px;line-height:1.6}
+.foot a{text-decoration:underline;color:var(--dim)}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<!-- ============ SPLASHSCREEN ============ -->
+<div id="splash" class="novid">
+  <video id="splashVid" playsinline muted autoplay preload="auto"
+         poster="assets/splash-poster.jpg" aria-hidden="true">
+    <source src="assets/splash-bench.mp4" type="video/mp4">
+  </video>
+  <div class="check top"></div>
+  <div class="splash-inner">
+    <img class="mark" src="assets/logo-the-bench.png" alt="The Bench Sport Bar">
+    <div class="welcome">Benvenuti al</div>
+    <h1>The Bench<br>Sport Bar</h1>
+    <div class="tap">Tocca per entrare</div>
+  </div>
+  <div class="check bot"></div>
+</div>
+
+<!-- ============ LINK PAGE ============ -->
+<div class="check strip top"></div>
+<div class="check strip bot"></div>
+
+<main class="page" id="page">
+  <div class="hero">
+    <img src="assets/logo-the-bench.png" alt="The Bench Sport Bar">
+    <h1>Benvenuti al<br>The Bench Sport Bar</h1>
+    <div class="loc"><span class="dot"></span> Agnano · Napoli</div>
+  </div>
+
+  <!-- 1. MENÙ -->
+  <a class="btn-main" href="index.html">
+    <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 6h18M3 12h18M3 18h12"/>
+    </svg>
+    Apri il menù
+  </a>
+
+  <!-- 2. SEGUICI (collapsable) -->
+  <div class="coll" id="coll">
+    <button class="coll-head" id="collBtn" aria-expanded="false" aria-controls="collBody">
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 21s-7.5-4.8-9.4-9.3A5.3 5.3 0 0 1 12 6.6a5.3 5.3 0 0 1 9.4 5.1C19.5 16.2 12 21 12 21z"/>
+      </svg>
+      Seguici
+      <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+    </button>
+    <div class="coll-body" id="collBody">
+      <div class="socials">
+        <a class="soc ig" href="https://www.instagram.com/thebench.barsport" target="_blank" rel="noopener" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41-.56-.22-.96-.48-1.38-.9-.42-.42-.68-.82-.9-1.38-.16-.42-.36-1.06-.41-2.23-.06-1.27-.07-1.65-.07-4.85s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41 1.27-.06 1.65-.07 4.85-.07M12 0C8.74 0 8.33.01 7.05.07 5.78.13 4.9.33 4.14.63a5.9 5.9 0 0 0-2.13 1.38A5.9 5.9 0 0 0 .63 4.14c-.3.76-.5 1.64-.56 2.91C.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.27.26 2.15.56 2.91a5.9 5.9 0 0 0 1.38 2.13 5.9 5.9 0 0 0 2.13 1.38c.76.3 1.64.5 2.91.56C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.27-.06 2.15-.26 2.91-.56a5.9 5.9 0 0 0 2.13-1.38 5.9 5.9 0 0 0 1.38-2.13c.3-.76.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.27-.26-2.15-.56-2.91a5.9 5.9 0 0 0-1.38-2.13A5.9 5.9 0 0 0 19.86.63c-.76-.3-1.64-.5-2.91-.56C15.67.01 15.26 0 12 0z"/><path d="M12 5.84A6.16 6.16 0 1 0 18.16 12 6.16 6.16 0 0 0 12 5.84zM12 16a4 4 0 1 1 4-4 4 4 0 0 1-4 4z"/><circle cx="18.41" cy="5.59" r="1.44"/></svg>
+          <span class="soc-lbl">Instagram</span>
+        </a>
+        <a class="soc tt" href="https://www.tiktok.com/@thebenchbarsportnapoli" target="_blank" rel="noopener" aria-label="TikTok">
+          <svg viewBox="0 0 24 24"><path class="tt-c" d="M18.1 6.6A4.28 4.28 0 0 1 17 3.8h-3.1v12.4a2.59 2.59 0 0 1-2.58 2.5 2.59 2.59 0 1 1 .72-5.07v-3.1a5.65 5.65 0 0 0-.72-.05 5.68 5.68 0 1 0 5.68 5.68V9.79a7.35 7.35 0 0 0 4.3 1.38V8.08a4.29 4.29 0 0 1-3.2-1.48z"/><path class="tt-m" d="M15.4 4.62A4.28 4.28 0 0 1 14.34 1.8h-3.1v12.4a2.59 2.59 0 0 1-2.58 2.5 2.59 2.59 0 1 1 .72-5.07v-3.1a5.65 5.65 0 0 0-.72-.05 5.68 5.68 0 1 0 5.68 5.68V7.81a7.35 7.35 0 0 0 4.3 1.38V6.1a4.29 4.29 0 0 1-3.24-1.48z" opacity=".85"/><path fill="#fff" d="M16.75 5.61A4.28 4.28 0 0 1 15.69 2.8h-3.1v12.4a2.59 2.59 0 0 1-2.58 2.5 2.59 2.59 0 1 1 .72-5.07v-3.1a5.65 5.65 0 0 0-.72-.05 5.68 5.68 0 1 0 5.68 5.68V8.8a7.35 7.35 0 0 0 4.3 1.38V7.09a4.29 4.29 0 0 1-3.24-1.48z"/></svg>
+          <span class="soc-lbl">TikTok</span>
+        </a>
+        <a class="soc fb" href="https://www.facebook.com/profile.php?id=61560094858990" target="_blank" rel="noopener" aria-label="Facebook">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.09 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.25h3.33l-.53 3.49h-2.8V24C19.61 23.09 24 18.1 24 12.07z"/></svg>
+          <span class="soc-lbl">Facebook</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. RECENSIONI (collapsable) -->
+  <div class="coll" id="coll2">
+    <button class="coll-head" id="collBtn2" aria-expanded="false" aria-controls="collBody2">
+      <svg width="21" height="21" viewBox="0 -10 511.98685 511" fill="currentColor" aria-hidden="true">
+        <path d="m114.59375 491.140625c-5.609375 0-11.179688-1.75-15.933594-5.1875-8.855468-6.417969-12.992187-17.449219-10.582031-28.09375l32.9375-145.089844-111.703125-97.960937c-8.210938-7.167969-11.347656-18.519532-7.976562-28.90625 3.371093-10.367188 12.542968-17.707032 23.402343-18.710938l147.796875-13.417968 58.433594-136.746094c4.308594-10.046875 14.121094-16.535156 25.023438-16.535156 10.902343 0 20.714843 6.488281 25.023437 16.511718l58.433594 136.769532 147.773437 13.417968c10.882813.980469 20.054688 8.34375 23.425782 18.710938 3.371093 10.367187.253906 21.738281-7.957032 28.90625l-111.703125 97.941406 32.9375 145.085938c2.414063 10.667968-1.726562 21.699218-10.578125 28.097656-8.832031 6.398437-20.609375 6.890625-29.910156 1.300781l-127.445312-76.160156-127.445313 76.203125c-4.308594 2.558594-9.109375 3.863281-13.953125 3.863281zm141.398438-112.875c4.84375 0 9.640624 1.300781 13.953124 3.859375l120.277344 71.9375-31.085937-136.941406c-2.21875-9.746094 1.089843-19.921875 8.621093-26.515625l105.472657-92.5-139.542969-12.671875c-10.046875-.917969-18.6875-7.234375-22.613281-16.492188l-55.082031-129.046875-55.148438 129.066407c-3.882812 9.195312-12.523438 15.511718-22.546875 16.429687l-139.5625 12.671875 105.46875 92.5c7.554687 6.613281 10.859375 16.769531 8.621094 26.539062l-31.0625 136.9375 120.277343-71.914062c4.308594-2.558594 9.109376-3.859375 13.953126-3.859375zm-84.585938-221.847656s0 .023437-.023438.042969zm169.128906-.0625.023438.042969c0-.023438 0-.023438-.023438-.042969zm0 0"/>
+      </svg>
+      Lascia una recensione
+      <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+    </button>
+    <div class="coll-body" id="collBody2">
+      <div class="rev-wrap">
+        <a class="rev google" href="https://search.google.com/local/writereview?placeid=ChIJH1p2zRsPOxMRpxQES4YBLsA" target="_blank" rel="noopener">
+          <svg width="19" height="19" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.5 12.27c0-.79-.07-1.54-.2-2.27H12v4.51h6.47a5.53 5.53 0 0 1-2.4 3.63v3h3.87c2.27-2.09 3.56-5.17 3.56-8.87z"/><path fill="#34A853" d="M12 24c3.24 0 5.96-1.08 7.94-2.91l-3.87-3c-1.08.72-2.45 1.16-4.07 1.16-3.13 0-5.78-2.11-6.73-4.96H1.29v3.09A11.99 11.99 0 0 0 12 24z"/><path fill="#FBBC04" d="M5.27 14.29a7.2 7.2 0 0 1 0-4.58V6.62H1.29a12 12 0 0 0 0 10.76l3.98-3.09z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.43-3.43C17.95 1.19 15.23 0 12 0 7.31 0 3.26 2.69 1.29 6.62l3.98 3.09C6.22 6.86 8.87 4.75 12 4.75z"/></svg>
+          Recensione su Google <span class="stars">★★★★★</span>
+        </a>
+        <a class="rev trip" href="https://www.tripadvisor.it/Restaurant_Review-g187785-d28056825-Reviews-The_Bench_Bar_Sport-Naples_Province_of_Naples_Campania.html" target="_blank" rel="noopener">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="#34E0A1"><circle cx="7" cy="12" r="3.2"/><circle cx="17" cy="12" r="3.2"/><path d="M12 4.6c-3.6 0-6.9 1-9.4 2.7h-2l1.7 2a6.6 6.6 0 1 0 9.7 8.2 6.6 6.6 0 1 0 9.7-8.2l1.7-2h-2C18.9 5.6 15.6 4.6 12 4.6zM7 17.1a5.1 5.1 0 1 1 0-10.2 5.1 5.1 0 0 1 0 10.2zm10 0a5.1 5.1 0 1 1 0-10.2 5.1 5.1 0 0 1 0 10.2z"/></svg>
+          Recensione su Tripadvisor
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot">
+    The Bench Sport Bar · Agnano, Napoli<br>
+    © 2026 · Tutti i diritti riservati
+  </div>
+</main>
+
+<script>
+(function(){
+  var splash=document.getElementById('splash'),
+      page=document.getElementById('page'),
+      vid=document.getElementById('splashVid'),
+      done=false, timer=null;
+
+  function enter(){
+    if(done) return; done=true;
+    clearTimeout(timer);
+    var hadVideo=splash.classList.contains('on-video');
+    // 1. il video sfuma sul giallo, il logo resta
+    splash.classList.add('out');
+    setTimeout(function(){
+      // 2. la splash sfuma e i tasti salgono a scaglioni
+      if(vid){ try{ vid.pause(); }catch(e){} }
+      splash.classList.add('hide');
+      page.classList.add('in');
+      document.body.classList.add('entered');
+      setTimeout(function(){ if(splash.parentNode) splash.remove(); },900);
+    }, hadVideo?600:0);
+  }
+  function fallback(){           // niente video: splash gialla statica
+    splash.classList.add('novid');
+    clearTimeout(timer);
+    timer=setTimeout(enter,2400);
+  }
+
+  // finche' il video non dimostra di partire, resta la splash gialla
+  timer=setTimeout(enter,2400);
+
+  if(vid){
+    var started=false;
+    var giveUp=setTimeout(function(){ if(!started) fallback(); },1600);
+    vid.addEventListener('playing',function(){
+      if(started) return; started=true;
+      clearTimeout(giveUp); clearTimeout(timer);
+      splash.classList.remove('novid');
+      splash.classList.add('on-video');
+      vid.classList.add('on');
+      // esce a fine video, con un margine di sicurezza
+      timer=setTimeout(enter,(isFinite(vid.duration)?vid.duration*1000:5000)+250);
+    });
+    vid.addEventListener('ended',enter);
+    vid.addEventListener('error',fallback);
+    var pr=vid.play();
+    if(pr&&pr.catch) pr.catch(fallback);   // autoplay bloccato
+  }else{ fallback(); }
+
+  splash.addEventListener('click',enter);
+  document.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' ') enter(); });
+
+  function wire(cId,bId,other){
+    var c=document.getElementById(cId), b=document.getElementById(bId);
+    b.addEventListener('click',function(){
+      var open=c.classList.toggle('open');
+      b.setAttribute('aria-expanded',open?'true':'false');
+      if(open&&other){var o=document.getElementById(other);
+        o.classList.remove('open');
+        o.querySelector('.coll-head').setAttribute('aria-expanded','false');}
+    });
+  }
+  wire('coll','collBtn','coll2');
+  wire('coll2','collBtn2','coll');
+})();
+</script>
+</body>
+</html>

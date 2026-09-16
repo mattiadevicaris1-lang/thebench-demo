@@ -8,9 +8,13 @@
 //   4. git commit && git push (Vercel redeploya)
 
 export const config = {
-  // Il middleware gira su tutto TRANNE: file statici, path Vercel interni.
+  // Il middleware gira su tutto TRANNE:
+  //  - file statici (immagini, video, css, fonts...)
+  //  - path Vercel interni (_next, _vercel)
+  //  - /links e /links.html (linktree pubblico per i clienti finali)
+  //
   // /__gate deve girare qui (è l'endpoint di login).
-  matcher: '/((?!_next|_vercel|.*\\.(?:png|jpg|jpeg|svg|ico|css|woff2?|json|xml|txt)$).*)',
+  matcher: '/((?!_next|_vercel|links|.*\\.(?:png|jpg|jpeg|svg|ico|css|woff2?|json|xml|txt|mp4|webm|mov|gif)$).*)',
 };
 
 // SHA-256 hex della password. Password attuale: "TheBench2026"

@@ -501,46 +501,65 @@ button:disabled{cursor:default}
 <script>
 /* ================= BOZZA MENU (sostituibile) ================= */
 const CATS = [
-  {id:'frigo', nome:'Birre & Bibite fredde', emoji:'🥤', staz:'frigo', prep:2,  max:99, fast:true},
-  {id:'spina', nome:'Birre alla spina',       emoji:'🍺', staz:'bar',   prep:5,  max:14},
-  {id:'cock',  nome:'Cocktail',               emoji:'🍸', staz:'bar',   prep:12, max:8},
-  {id:'pizza', nome:'Pizze',                  emoji:'🍕', staz:'cucina',prep:20, max:16},
-  {id:'fritti',nome:'Fritti & Street food',   emoji:'🍟', staz:'cucina',prep:12, max:20},
-  {id:'dolci', nome:'Dolci',                  emoji:'🍰', staz:'cucina',prep:4,  max:20},
+  {id:'spina', nome:'Birre alla spina',      emoji:'🍺', staz:'bar',   prep:5,  max:14},
+  {id:'bott',  nome:'Birre in bottiglia',    emoji:'🍾', staz:'frigo', prep:2,  max:99, fast:true},
+  {id:'artig', nome:'Birre artigianali',     emoji:'🌾', staz:'frigo', prep:2,  max:99, fast:true},
+  {id:'cock',  nome:'Drink & Vini',          emoji:'🍸', staz:'bar',   prep:12, max:8},
+  {id:'soft',  nome:'Soft drink & Caffè',    emoji:'🥤', staz:'frigo', prep:2,  max:99, fast:true},
+  {id:'pizza', nome:'Pizza a portafoglio',   emoji:'🍕', staz:'cucina',prep:20, max:16},
+  {id:'fritti',nome:'Fritti',                emoji:'🍟', staz:'cucina',prep:12, max:20},
+  {id:'panini',nome:'Saltimbocca & Roll',    emoji:'🥖', staz:'cucina',prep:10, max:20},
+  {id:'gelati',nome:'Gelati',                emoji:'🍦', staz:'frigo', prep:2,  max:99, fast:true},
 ];
 const ITEMS = [
-  {c:'frigo', n:'Peroni 33cl',            d:'Bottiglia ghiacciata',               p:400},
-  {c:'frigo', n:'Ichnusa non filtrata',   d:'Bottiglia 33cl',                     p:500},
-  {c:'frigo', n:'Corona 33cl',            d:'Con lime',                           p:500},
-  {c:'frigo', n:'Coca Cola / Zero',       d:'Lattina 33cl',                       p:350},
-  {c:'frigo', n:'Acqua naturale/frizz.',  d:'50cl',                               p:200},
-  {c:'frigo', n:'Tè freddo pesca/limone', d:'Lattina 33cl',                       p:350},
+  {c:'spina', n:'Peroni 40 cl',              d:'Alla spina',                        p:500},
+  {c:'spina', n:'Peroni Gran Riserva Red 35 cl', d:'Alla spina',                    p:500},
+  {c:'spina', n:'Lagunitas IPA 40 cl',       d:'Alla spina, luppolata',             p:700},
+  {c:'spina', n:'San Benoit Ambrée 35 cl',   d:'Alla spina, ambrata',               p:500},
+  {c:'spina', n:'San Benoit Tripel 40 cl',   d:'Alla spina, tripel',                p:700},
+  {c:'spina', n:'Raffo Grezza 40 cl',        d:'Alla spina, non filtrata',          p:600},
 
-  {c:'spina', n:'Bionda chiara 0,4L',     d:'Lager, 5.0%',                        p:500},
-  {c:'spina', n:'Bionda chiara 0,2L',     d:'Lager, 5.0%',                        p:350},
-  {c:'spina', n:'IPA artigianale 0,4L',   d:'Luppolata, 6.2%',                    p:650},
-  {c:'spina', n:'Weiss 0,4L',             d:'Di frumento, 5.4%',                  p:600},
+  {c:'bott',  n:'Peroni senza glutine',      d:'Bottiglia gluten free',             p:350},
+  {c:'bott',  n:'Bulldog',                   d:'Bottiglia',                         p:400},
+  {c:'bott',  n:'Corona',                    d:'Bottiglia',                         p:350},
+  {c:'bott',  n:'Franziskaner',              d:'Bottiglia, weiss',                  p:500},
+  {c:'bott',  n:'Nastro 0.0',                d:'Bottiglia analcolica',              p:350},
 
-  {c:'cock',  n:'Spritz Aperol',          d:'Prosecco, Aperol, soda',             p:600},
-  {c:'cock',  n:'Gin Tonic',              d:'Gin London Dry, tonica, lime',       p:800},
-  {c:'cock',  n:'Mojito',                 d:'Rum, lime, menta, zucchero',         p:800},
-  {c:'cock',  n:'Negroni',                d:'Gin, vermouth rosso, bitter',        p:800},
-  {c:'cock',  n:'Margarita',              d:'Tequila, triple sec, lime',          p:850},
+  {c:'artig', n:'Amerino Mundial',           d:'Birra artigianale',                 p:600},
+  {c:'artig', n:'Amerino Masika',            d:'Birra artigianale',                 p:600},
+  {c:'artig', n:'Amerino Edo IPA',           d:'Birra artigianale, IPA',            p:600},
+  {c:'artig', n:'Amerino Mario Rossi',       d:'Birra artigianale',                 p:600},
 
-  {c:'pizza', n:'Margherita',             d:'Pomodoro, fiordilatte, basilico',    p:700},
-  {c:'pizza', n:'Marinara',               d:'Pomodoro, aglio, origano',           p:550},
-  {c:'pizza', n:'Diavola',                d:'Pomodoro, fiordilatte, salame picc.',p:900},
-  {c:'pizza', n:'Bufalina',               d:'Pomodoro, bufala DOP, basilico',     p:1000},
-  {c:'pizza', n:'Ortolana',               d:'Verdure grigliate, fiordilatte',     p:950},
+  {c:'cock',  n:'Cocktail',                  d:'Della lista',                       p:700},
+  {c:'cock',  n:'Premium Cocktail',          d:'Selezione premium',                 p:1000},
+  {c:'cock',  n:'Calice di vino',            d:'Bianco o rosso',                    p:500},
+  {c:'cock',  n:'Vino in bottiglia',         d:'Bottiglia',                         p:2000},
+  {c:'cock',  n:'Prosecco',                  d:'Bottiglia',                         p:2500},
 
-  {c:'fritti',n:'Cuoppo napoletano',      d:'Frittatine, crocché, zeppoline',     p:700},
-  {c:'fritti',n:'Patatine fritte',        d:'Porzione grande',                    p:450},
-  {c:'fritti',n:'Montanare (3 pz)',       d:'Pizzelle fritte, pomodoro, grana',   p:600},
-  {c:'fritti',n:'Alette di pollo (6 pz)', d:'Piccanti o BBQ',                     p:800},
-  {c:'fritti',n:'Nachos & guacamole',     d:'Da condividere',                     p:750},
+  {c:'soft',  n:'Coca Cola',                 d:'In lattina',                        p:350},
+  {c:'soft',  n:'Coca Cola Zero',            d:'In lattina',                        p:350},
+  {c:'soft',  n:'Fanta',                     d:'In lattina',                        p:350},
+  {c:'soft',  n:'Estathé limone',            d:'In lattina',                        p:350},
+  {c:'soft',  n:'Estathé pesca',             d:'In lattina',                        p:350},
+  {c:'soft',  n:'Redbull',                   d:'Energy drink',                      p:400},
+  {c:'soft',  n:'Acqua',                     d:'Naturale o frizzante',              p:100},
+  {c:'soft',  n:'Caffè',                     d:'Espresso',                          p:100},
 
-  {c:'dolci', n:'Tiramisù',               d:'Porzione singola',                   p:500},
-  {c:'dolci', n:'Babà al rum',            d:'Classico napoletano',                p:400},
+  {c:'pizza', n:'Margherita',                d:'Pizza a portafoglio',               p:400},
+  {c:'pizza', n:'Marinara',                  d:'Pizza a portafoglio',               p:400},
+  {c:'pizza', n:'Würstel e patatine',        d:'Pizza a portafoglio',               p:500},
+
+  {c:'fritti',n:'Patatine',                  d:'Porzione',                          p:350},
+  {c:'fritti',n:'Patatine farcite',          d:'Porzione farcita',                  p:450},
+  {c:'fritti',n:'Crocchè',                   d:'Al pezzo',                          p:250},
+  {c:'fritti',n:'Frittatina',                d:'Al pezzo',                          p:250},
+  {c:'fritti',n:'Arancini',                  d:'Al pezzo',                          p:250},
+
+  {c:'panini',n:'Saltimbocca',               d:'Farciture varie',                   p:600},
+  {c:'panini',n:'Roll',                      d:'Farciture varie',                   p:400},
+
+  {c:'gelati',n:'Gelato',                    d:'Gusti vari',                        p:300},
+  {c:'gelati',n:'Gelato speciale',           d:'Gusti vari',                        p:350},
 ].map((x,i)=>({...x,id:i+1,out:false}));
 
 /* ================= STATO ================= */
@@ -574,23 +593,23 @@ function seedMock(){
     {id:42, nome:'Marco R.', email:'marco.r@gmail.com', tot:2400, mode:'insieme',
      stato:'aperto', mine:false, t0:now()-8*60000, eta:22, askedAt:now()-9*60000, confirmed:true, paid:false,
      righe:[
-       {n:'Diavola', q:1, staz:'cucina', stato:'preparing'},
-       {n:'Bufalina', q:1, staz:'cucina', stato:'preparing'},
-       {n:'IPA artigianale 0,4L', q:2, staz:'bar', stato:'held'},
+       {n:'Saltimbocca', q:2, staz:'cucina', stato:'preparing'},
+       {n:'Patatine farcite', q:1, staz:'cucina', stato:'preparing'},
+       {n:'Lagunitas IPA 40 cl', q:2, staz:'bar', stato:'held'},
      ]},
     // Ordine 043 — appena arrivato, subito in preparazione
     {id:43, nome:'Sara T.', email:'sara.t@libero.it', tot:1450, mode:'subito',
      stato:'aperto', mine:false, t0:now()-2*60000, eta:12, askedAt:now()-90000, confirmed:true, paid:true,
      righe:[
-       {n:'Cuoppo napoletano', q:1, staz:'cucina', stato:'preparing'},
-       {n:'Bionda chiara 0,4L', q:2, staz:'bar', stato:'preparing'},
+       {n:'Crocchè', q:4, staz:'cucina', stato:'preparing'},
+       {n:'Peroni 40 cl', q:2, staz:'bar', stato:'preparing'},
      ]},
     // Ordine 041 — pronto al ritiro, già pagato in app
     {id:41, nome:'Luigi P.', email:'luigi.p@icloud.com', tot:1750, mode:'subito',
      stato:'aperto', mine:false, t0:now()-15*60000, eta:14, askedAt:now()-14*60000, confirmed:true, paid:true,
      righe:[
        {n:'Margherita', q:2, staz:'cucina', stato:'ready'},
-       {n:'Coca Cola / Zero', q:2, staz:'frigo', stato:'ready'},
+       {n:'Coca Cola Zero', q:2, staz:'frigo', stato:'ready'},
      ]},
   ];
   seq = 43;
@@ -602,7 +621,7 @@ function seedMock(){
   ticketSeq = 2;
   tickets = [
     {id:2, orderId:42, cliente:'Marco R.', email:'marco.r@gmail.com',
-     testo:'La Bufalina è arrivata tiepida, si può rifare?',
+     testo:'Il saltimbocca è arrivato freddo, si può rifare?',
      at:new Date(Date.now()-4*60000), stato:'aperto'},
     {id:1, orderId:38, cliente:'Anna B.', email:'anna.b@icloud.com',
      testo:'Ho pagato in app ma sull\'email non trovo lo scontrino',
@@ -612,10 +631,10 @@ function seedMock(){
   ];
   log('cliente','ordine','⚠️ SEGNALAZIONE ticket #1 su ordine #38: "scontrino non ricevuto"',true);
   log('menu','config','Ticket #1 — risposta inviata a anna.b@icloud.com');
-  log('cliente','ordine','⚠️ SEGNALAZIONE ticket #2 su ordine #42: "Bufalina tiepida"',true);
+  log('cliente','ordine','⚠️ SEGNALAZIONE ticket #2 su ordine #42: "Saltimbocca freddo"',true);
   log('cassa','incasso','#40 INCASSATO 12,00 € · contanti · scontrino RT #B012');
-  log('menu','stock','«Weiss 0,4L» rimesso disponibile');
-  log('menu','prezzo','«Spritz Aperol» prezzo 5,50 € → 6,00 €',true);
+  log('menu','stock','«Franziskaner» rimesso disponibile');
+  log('menu','prezzo','«Premium Cocktail» prezzo 9,00 € → 10,00 €',true);
 }
 
 /* ================= SHELL ================= */
@@ -1847,11 +1866,11 @@ function viewReport(tabs){
   const scontrino = totInc / nOrdini;
 
   const top5 = [
-    {n:'Peroni 33cl',           q:34, r:13600},
-    {n:'Bionda chiara 0,4L',    q:28, r:14000},
-    {n:'Margherita',            q:22, r:15400},
-    {n:'Spritz Aperol',         q:19, r:11400},
-    {n:'Diavola',               q:17, r:15300},
+    {n:'Peroni 40 cl',        q:34, r:17000},
+    {n:'Margherita',          q:28, r:11200},
+    {n:'Crocchè',             q:22, r:5500},
+    {n:'Cocktail',            q:19, r:13300},
+    {n:'Saltimbocca',         q:17, r:10200},
   ];
 
   const stazTimes = [
