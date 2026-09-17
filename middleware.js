@@ -17,8 +17,8 @@ export const config = {
   matcher: '/((?!_next|_vercel|links|.*\\.(?:png|jpg|jpeg|svg|ico|css|woff2?|json|xml|txt|mp4|webm|mov|gif)$).*)',
 };
 
-// SHA-256 hex della password. Password attuale: "TheBench2026"
-const H = '4a117b54e2f16d167ef2ec4576639f0a5275130e98238f1dfb336897beb6305a';
+// SHA-256 hex della password. Password attuale: "Banana33"
+const H = 'b7e35894ea45b3670a32a686dd2d5c8acc3f3ff2ef7d1f701f3e7cee99303ea7';
 
 function parseCookies(header) {
   const out = {};
